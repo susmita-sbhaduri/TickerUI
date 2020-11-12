@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+        <title>Tāl Mān</title>
+        <script type="text/javascript">
+            $(function () {
+                $('#menu-button').on('click', function (e) {
+                    $('#menu').toggleClass('overlay-menu');
+                    e.preventDefault();
+                });
+            });
+        </script>
+        <link rel="shortcut icon" type="image/x-icon" href="#{resource['taalmaan/images/logo.png']}"/>
+        <ui:insert name="head"/>
+    </h:head>
+
+    <h:body styleClass="landing-body">
+
+        <div class="landing-wrapper">
+            <div class="landing-header">
+                <div class="landing-header-content clearfix">
+                    <p:graphicImage name="images/logo.png" library="taalmaan" width="50"/>
+
+                    <a id="menu-button" href="#">
+                        <span class="fa fa-bars"></span>
+                    </a>
+                    
+                    <ul id="menu">
+                       
+                        <li><h:link  value="Host: #{loginController.tenantName}" outcome="SelectTenant">
+                            </h:link> </li>
+                        <li><a href="#pricing">About</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#mobile">View Songs</a></li>
+                        
+                        <li><a href="#video">Video</a></li>
+                        
+                        
+                            <li><h:link  value="Login" outcome="Signin?product=2">
+                            </h:link>   </li>
+                        
+                        
+                    </ul>
+                </div>
+            </div>
+
+            <div id="introduction">
+                <div class="introduction-content">
+                    <span class="title">Tāl Mān</span>
+                    <span class="subtitle">A Computational tool for Tālā detection.</span>
+                    <span class="subsubtitle">An Effort from Rabindra Bharati University and Deepa Ghosh Research Foundation</span>
+
+                    <p:graphicImage name="images/logo.png" library="taalmaan" />
+                    <p:button styleClass="brown-button" value="Try It" outcome="Signin?product=2"></p:button>
+                </div>
+            </div>
+            <div id="pricing">
+                <div class="pricing-content">
+                    <span class="pricing-title">About</span>
+
+                    <p>
+
+                        <q>
+                            The arising, enduring and disappearance of three worlds come from rhythm(<i>tāla</i>). From the smallest worm onwards, all animals move by rhythm. All work in the world depends on rhythm. It is by rhythm that the sun and other planets move.</q>
+                        <div class="author">
+                            – (Quoted in Rāga Kalpadrumā) 
+                        </div>
+
+                    </p>
+                    <p>
+                        North Indian classical music is found throughout the North India for all genre of music i.e. in pure classical music, hindi ﬁlmy music etc. North Indian classical music or <i>Shastriya Sangit</i> is studied with respect to three aspects of <i>svara</i>, <i>tāla</i> , <i>pada</i>. <i>svara</i> represents the melodic part of music while pada refers to the syllabic part or the words in songs. <i>Tāla</i> as we know, is the rhythmic pattern of any composition and it roughly resembles to metre in Western music.
+                    </p>
+
+                    <p>In the earliest system of music, namely <i>Samagana</i>, there is no mention of <i>tāla</i>. It is only later, during the time of <i>Gandharvas</i>(a term for skilled singers in Indian classical music), that we come across the use of <i>tāla</i>. The <i>Natyasastra of Bharata</i>(pre-4th Cent. A.D.) along with the commentary <i>Abhinavabharati of Abhinavagupta</i>(11th cent. A.D.), the <i>Dattilam of Dattila</i> (pre-4th Cent. A.D.) and the <i>Sangitaratnakara of Sarngadeva (13th cent. A.D.)</i> are the main sources of information on <i>Ghandharva</i>. These works deal with an elaborate and intricate system of <i>tāla</i> . 
+                        Compared to Samagana which was not based on <i>tāla</i>, the Gandharva musical forms present a different structural set-up altogether, in which the <i>tāla</i> framework is the dominant aspect. It could be conjectured that prior to <i>Gandharva</i>, <i>tāla</i> ﬁgured only in dance and its introduction into classical music began only with Gandharva. 
+                    </p>
+                    <p>
+                        The complex rhythmic framework of the NICM <i>tāla</i> requires a holistic approach to rhythm description. <i>Tablā</i> bol-s or syllables deﬁne a language for Indian percussion and play a very important role in deﬁning rhythmic structures in Indian music. These syllables are considered as the solfege of percussion and are standardized for <i>tablā</i>. Also they form an essential part of <i>tablā</i> training. In NICM music, the <i>theka-s</i> are deﬁned using these bol-s and the bol-s can be used to track the progression of a music piece through the āvart. These syllables/bol-s also form an important element of the dance forms <i>Kathak</i> (using bol-s) and Bharatanayam (using <i>solkau</i>). Hence the drum transcription at bol-level takes an important role in the Indian music. 
+                    </p>
+
+                    <p>If we listen to Hindi movie songs  from the ‘60s up to the‘70s, Bhajans, Ghazals or similar semi-classical songs, composed on mainly Kaharba, Dadra, Rupak <i>tāla</i> etc. and played on <i>tablā</i>(mainly), pakhwaj and mridangam , we can detect their <i>tāla</i> by just listening to them for a minute. But can we do so computationally? i.e. if one audio file of the song is fed into a software program, will it detect the <i>tāla</i> for us? If that becomes possible then a lots of applications like intelligent music archival and retrieval, enhanced navigation through music collections, content based music retrieval, validation of <i>tāla</i> for pedagogy in North-Indian-Music-System(NIMS) and many more, would be more computationally feasible.</p> 
+                    <p>The human brain can easily extract the <i>tablā</i> signal or the percussive portion 
+                        from a polyphonic song and can detect the <i>tāla</i>, even with minimal musical knowledge. 
+                        However there are a number of computational challenges for detecting <i>tāla</i> of a polyphonic song 
+                        composed with <i>tablā</i> as a percussion instrument. 
+                        Firstly the right-hand component or the dayan has frequency overlap with 
+                        voice and other instruments. Hence if we want to extract the whole frequency range of dayan and bayan signals from the polyphonic song, 
+                        the output signal will be a noisy version of the original song which will retain the contributions of 
+                        other instruments and human voice. As a result, <i>tāla</i> detection for a polyphonic song composed on <i>tablā</i>, cannot 
+                        be done computationally by applying the same method as followed by human brain. Moreover meter in North-Indian-Music-System is distinctly 
+                        cyclical and much more complex compared to Western meter (Clayton 1997). 
+                        This complexity is another challenge for North Indian Music System <i>tāla</i> analysis.</p>
+
+                    <p>We have designed this software for successfully detecting the <i>tāla</i> 
+                        of semi-classical Hindi polyphonic songs by using the left-hand signal of the drum, or
+                        the bayan signal. It is producing meaningful results because the left-drum normally does not have 
+                        frequency overlap with voice and other instruments. Moreover, we have explored this cyclic property 
+                        of NIMS <i>tāla</i>, which comprises stressed and non-stressed beats played by the <i>tablā</i>, to extract a
+                        characteristic pattern from the left-drum strokes. These patterns, after being matched with the 
+                        grammar of North Indian Music System rhythm system, determine the meter.</p>
+
+                    <p>Our software design process of <i>tāla</i> detection for NIMS rhythm system, started in the year 2014 
+                        with <a class="tag-cloud-link" href="https://link.springer.com/chapter/10.1007/978-3-319-07353-8_25">
+                            Matra and tempo detection for INDIC(INDIan Classical music) <i>tāla</i>-s</a> with limited number of <i>tablā</i>-clips samples and was 
+                        followed by <a class="tag-cloud-link" href="http://ieeexplore.ieee.org/document/7052049/">
+                            A Novel Method for Tempo Detection of INDIC <i>tāla</i>-s</a> with huge number of <i>tablā</i>-clips extracted, 
+                        from <i>tablā</i> solo recordings of electronic <i>tablā</i>. Thereafter, we have extended our software to detect <i>tāla</i> 
+                        from real <i>tablā</i> solo signals played by various artists detailed in the article titled
+                        <a class="tag-cloud-link" href="https://link.springer.com/article/10.1007%2Fs11334-015-0247-5">Rhythm analysis of <i>tablā</i> signal by detecting the cyclic pattern</a>
+                        in the year 2015. 
+                        We have also reported different nonlinear and non-stationary aspects of various instrumental
+                        Indian raga songs, drone and speech signals in the article titled 
+                        <a class="tag-cloud-link" href="http://www.currentscience.ac.in/Volumes/110/09/1817.pdf">Speech Music and Multifractality</a>
+                        in 2016.
+                        However we are yet to include the nonlinear features in the current software.</p>
+
+                    <p>These algorithms have been finally extended to handle the <i>tāla</i> of polyphonic songs with <i>tablā</i> 
+                        as percussion instrument for North Indian Music System rhythm system and the method 
+                        has been elaborated and reported in article 
+                        <a class="tag-cloud-link" href="https://arxiv.org/abs/1611.05182">Detecting <i>tāla</i> Computationally in Polyphonic Context - A Novel Approach</a></p>
+
+                    <p>With all this being said and done we must conclude that these are items of pure research. “Research”, however, is a very broad term, covering an entire spectrum of activities from basic research to applied research to product development. 
+                        The vast majority of academic scientists conduct basic (or pure) research, which involves gaining more comprehensive knowledge or understanding of the subject under study without specific applications in mind. Professors and their students, funded by grants, create new theories and hypotheses, then design and conduct experiments to test them. Results are published in peer-reviewed journals, and scientists at different institutions test and build on each other’s work. </p>
+
+                    <p>We, however, are more convinced with applied research i.e. gathering knowledge with the goal of producing useful materials or devices to meet specific, recognized requirements. The current version of the TālMān software is produced with the idea of applying  academic knowledge to real-world situations and develop further on it with an objective of improving the accuracy.
+                        The current version of the TālMān software has been designed with this algorithm which currently 
+                        works for the songs played with <i>tablā</i> or <i>tablā</i> solo signals composed on Kaharba, Dadra, Rupak and Bhajani <i>tāla</i>.
+                        Also it has been tested on over 100 song-samples composed on these <i>tāla</i>-s. 
+                        We wish to release it as a testable product to all and through this process 
+                        we intend to gather more and more sample songs to further improve and extend the product.</p>
+                    <div class="author">
+                        -- <a class="tag-cloud-link" href="http://www.dgfoundation.in/author/susmita-sbhaduri/">Susmita Bhaduri</a>
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="features">
+                <div class="features-content">
+                    <span class="feature-title">Tāl Mān Features</span>
+                    <p>An unique computational tool for automated detection of Tālā from North Indian classical music.</p>
+
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-md-4">
+                            <p:graphicImage name="images/landing/section2_1.png" library="omega-layout" styleClass="feature-icon"/>
+                            <span class="feature-text">
+                                <span>Register</span>
+                                <p>User can be a registered one or a usual user. </p>
+                            </span>
+                        </div>
+                        <div class="ui-g-12 ui-md-4">
+                            <p:graphicImage name="images/landing/section2_2.png" library="omega-layout" styleClass="feature-icon"/>
+                            <span class="feature-text">
+                                <span>Upload</span>
+                                <p>Registered user can upload a single channel, .wav-format song-clip of a polyphonic song with tabla as percussion instrument or tabla solo signal of 60 seconds-duration and sampled at 44100Hz. Along with that, some desired meta-data can be fed as input. These details would be saved in the server which the registered user can ‘edit’ or ‘delete’.</p>
+                            </span>
+                        </div>
+                        <div class="ui-g-12 ui-md-4">
+                            <p:graphicImage name="images/landing/section2_3.png" library="omega-layout" styleClass="feature-icon"/>
+                            <span class="feature-text">
+                                <span>Detect</span>
+                                <p>Then the tāla of the song-clip detected can be detected by our software TālMān hosted on server. </p>
+                            </span>
+                        </div>
+                        <div class="ui-g-12 ui-md-4">
+                            <p:graphicImage name="images/landing/section2_4.png" library="omega-layout" styleClass="feature-icon"/>
+                            <span class="feature-text">
+                                <span>Preview</span>
+                                <p>The user can see the list of files uploaded by him.</p>
+                            </span>
+                        </div>
+                        <div class="ui-g-12 ui-md-4">
+                            <p:graphicImage name="images/landing/section2_5.png" library="omega-layout" styleClass="feature-icon"/>
+                            <span class="feature-text">
+                                <span>See others</span>
+                                <p>Usual user can see the whole list and play the song-clips and check the detected tāla, but cannot ‘upload’, ‘delete’ or ‘edit’ one in the list.</p>
+                            </span>
+                        </div>
+                        <div class="ui-g-12 ui-md-4">
+                            <p:graphicImage name="images/landing/section2_6.png" library="omega-layout" styleClass="feature-icon"/>
+                            <span class="feature-text">
+                                <span>Feedback</span>
+                                <p>Retro occupy organic, stumptown shabby chic pour-over roof party DIY.</p>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="mobile">
+                <div class="mobile-content">
+                    <span class="title">Get a feel</span>
+                    <span class="subtitle">View detected Tālā of songs already uploaded.</span>
+
+                    <p:graphicImage name="images/fourier.gif" library="taalmaan" width="400"/>
+                    <p:button styleClass="brown-button" outcome="SongListAll" value="View Song List" ></p:button>
+                </div>
+            </div>
+
+
+            <div id="video">
+                <div class="video-content">
+                    <span class="video-title">Video</span>
+                    <p>See demo video.</p>
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/ovvPi9UDahU" frameborder="0" width="560"></iframe>
+                    </div>
+                </div>
+            </div>
+
+            <div class="landing-footer">
+                <div class="landing-footer-content">
+                    <div class="footer-top">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <p:graphicImage name="images/dgrflogo.png" library="taalmaan" />
+                                <p>©  <a class="tag-cloud-link" href="http://www.dgfoundation.in">Deepa Ghosh Research Foundation</a> </p>
+                            </div>
+                            <div class="ui-g-6">
+
+                                <ul>
+                                    <li><a href="http://www.yamunakinare.org">Towards the history of Kirtan - Yamuna Kinare</a></li>
+                                    <li><a href="http://www.purankosh.in">Encyclopedia of the Purana-s - Purankosh</a></li>
+                                    <li><a href="http://www.kathaamritasaman.in">A translation of the Mahabharata - Katha Amrita Saman</a></li> 
+                                    <li><a href="http://www.vishwaparichay.in">An Encyclopedia of Science in Bengali - Vishwa Parichay</a></li> 
+                                </ul>
+                                
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="footer-bottom">
+                        All Rights Reserved
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h:outputStylesheet name="css/layout.css" library="omega-layout" />
+        <h:outputStylesheet name="css/taalmaan.css" library="taalmaan" />
+    </h:body>
+
+</html>

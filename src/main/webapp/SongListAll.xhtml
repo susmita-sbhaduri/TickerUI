@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+        <title>Tāl Mān</title>
+        <script type="text/javascript">
+            $(function () {
+                $('#menu-button').on('click', function (e) {
+                    $('#menu').toggleClass('overlay-menu');
+                    e.preventDefault();
+                });
+            });
+        </script>
+        <ui:insert name="head"/>
+    </h:head>
+
+    <h:body styleClass="landing-body">
+
+        <div class="landing-wrapper">
+            <div class="landing-header">
+                <div class="landing-header-content clearfix">
+                    <p:graphicImage name="images/logo.png" library="taalmaan" width="50"/>
+
+                    <a id="menu-button" href="#">
+                        <span class="fa fa-bars"></span>
+                    </a>
+                    <ul id="menu">
+
+                        <li><p:link  value="Home" outcome="Landing">
+                            </p:link></li>
+
+
+                        <li><h:link  value="Login" outcome="Signin">
+                            </h:link>   </li>
+                    </ul>
+                </div>
+            </div>
+           
+            <div id="introduction">
+                <f:metadata>
+                    <f:viewParam name="tenant" value="#{loginController.userAuthDTO.tenantId}"/>
+                    <f:viewAction action="#{songListAllController.fetchProcessedSongList()}" />
+                </f:metadata>
+                <h:form id="songdatatable" style="padding-left: 1%;padding-right: 1%;">
+                    <p:growl id="growl" sticky="true" showDetail="true" life="5" autoUpdate="true" />
+                    <p:dataTable id="songalltable" var="song" value="#{songListAllController.processedSongList}" reflow="true" paginator="true" rows="10">
+                        <p:column filterBy="#{song.songname}" headerText="Song Name" width="15%" filterMatchMode="contains">
+
+                            <p:outputLabel value="#{song.songname}" style="color: black;"/>
+
+                        </p:column>
+                        <p:column headerText="Song" width="40%">
+                            <h:outputText value="#{song.htmlAudioPath}" escape="false"></h:outputText>
+                        </p:column>
+                        <p:column headerText="Given Tala" width="15%">
+                            <p:outputLabel value="#{song.givenTaala}" style="color: black;"/>
+                        </p:column>
+                        <p:column headerText="Detected Tala" width="15%">
+                            <p:outputLabel value="#{song.detectedtala}" style="color: black;"/>
+                        </p:column>                    
+                        <p:column headerText="Details" width="15%">
+                            <p:commandButton  icon="fa fa-info" styleClass="black-button" update=":songDetail" oncomplete="PF('songDetailDialog').show()"  title="View Details">
+                                <f:setPropertyActionListener value="#{song}" target="#{songListAllController.selectedSong}" />
+
+                            </p:commandButton>
+                        </p:column> 
+
+                    </p:dataTable> 
+                </h:form>                    
+
+            </div>
+
+
+
+            <div class="landing-footer">
+                <div class="landing-footer-content">
+
+
+                    <div class="footer-bottom">
+                        All Rights Reserved
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <p:dialog header="Song Details" widgetVar="songDetailDialog" modal="false" showEffect="fade" hideEffect="fade" responsive="true">
+            <p:outputPanel id="songDetail">
+                <p:panelGrid  columns="2">
+                    <h:outputText value="Song name:" />
+                    <h:outputText value="#{songListAllController.selectedSong.songname}" />
+                    <h:outputText value="Album" />
+                    <h:outputText value="#{songListAllController.selectedSong.album}" />
+                    <h:outputText value="Other Details" />
+                    <h:outputText value="#{songListAllController.selectedSong.otherdetails}" />
+                    <h:outputText value="Given Tālā:" />
+                    <h:outputText value="#{songListAllController.selectedSong.givenTaala}" />
+                    <h:outputText value="Given Tempo" />
+                    <h:outputText value="#{songListAllController.selectedSong.givenTempo}" />
+                    <h:outputText value="Detected Tālā:" />
+                    <h:outputText value="#{songListAllController.selectedSong.detectedtala}" />
+                    <h:outputText value="Detected Tempo" />
+                    <h:outputText value="#{songListAllController.selectedSong.detectedTempo}" />                    
+                </p:panelGrid>
+            </p:outputPanel>
+        </p:dialog>
+        <h:outputStylesheet name="css/layout.css" library="omega-layout" />
+        <h:outputStylesheet name="css/taalmaan.css" library="taalmaan" />
+    </h:body>
+
+</html>
+
+
+
+
+

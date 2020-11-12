@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+    <ui:define name="content">
+        <p:panel id="userSongList">
+            <h:form id="songdatatable">
+                <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+                <p:dataTable var="song" value="#{userSongMaintenanceController.userProcessedSongList}" reflow="true" paginator="true" rows="10" >
+                    <p:column headerText="Song Name" width="10%" filterBy="#{song.songname}" filterMatchMode="contains">
+                        <p:commandLink update=":songDetail" oncomplete="PF('songDetailDialog').show()"  title="View Details">
+                            <f:setPropertyActionListener value="#{song}" target="#{userSongMaintenanceController.selectedSong}" />
+                            <p:outputLabel value="#{song.songname}"/>
+                        </p:commandLink>
+                    </p:column>
+                    <p:column headerText="Song" style="text-align: left;" width="40%">
+                        <h:outputText value="#{song.htmlAudioPath}" escape="false"></h:outputText>
+                    </p:column>
+                    <p:column headerText="Given Tala" >
+                        <p:outputLabel value="#{song.givenTaala}" />
+                    </p:column>
+                    <p:column headerText="Detected Tala">
+                        <p:outputLabel value="#{song.detectedtala}" />
+                    </p:column>                    
+                    <p:column headerText="Edit"  >
+                        <p:commandButton styleClass="black-button"  update=":songdataedit" onclick="PF('songdataeditDialogue').show()" icon="fa fa-pencil">
+                            <f:setPropertyActionListener value="#{song}" target="#{userSongMaintenanceController.selectedSong}" />
+                        </p:commandButton>
+                    </p:column>
+                    <p:column headerText="Delete" >
+                        <p:commandButton   icon="fa fa-trash" styleClass="black-button"  action="#{userSongMaintenanceController.markAsDelete(song)}">
+
+                        </p:commandButton>
+                    </p:column>                    
+                </p:dataTable> 
+            </h:form>
+        </p:panel>
+
+
+        <p:dialog header="Song Details" widgetVar="songDetailDialog" modal="false" showEffect="fade" hideEffect="fade" resizable="false">
+            <p:outputPanel id="songDetail">
+                <p:panelGrid  columns="2">
+                    <h:outputText value="Song name:" />
+                    <h:outputText value="#{userSongMaintenanceController.selectedSong.songname}" />
+                    <h:outputText value="Album" />
+                    <h:outputText value="#{userSongMaintenanceController.selectedSong.album}" />
+                    <h:outputText value="Other Details" />
+                    <h:outputText value="#{userSongMaintenanceController.selectedSong.otherdetails}" />
+                    <h:outputText value="Given Tālā:" />
+                    <h:outputText value="#{userSongMaintenanceController.selectedSong.givenTaala}" />
+                    <h:outputText value="Given Tempo" />
+                    <h:outputText value="#{userSongMaintenanceController.selectedSong.givenTempo}" />
+                    <h:outputText value="Detected Tālā:" />
+                    <h:outputText value="#{userSongMaintenanceController.selectedSong.detectedtala}" />
+                    <h:outputText value="Detected Tempo" />
+                    <h:outputText value="#{userSongMaintenanceController.selectedSong.detectedTempo}" />                    
+                </p:panelGrid>
+            </p:outputPanel>
+        </p:dialog>
+        <p:dialog header="Edit Song Details" widgetVar="songdataeditDialogue" modal="false" showEffect="fade" hideEffect="fade" resizable="false">
+            
+                <p:outputPanel id="songdataedit">
+                    <h:form id="songdataeditform">
+                    <p:panelGrid  columns="2">
+                        <h:outputText value="Song name:" />
+                        <p:inputText value="#{userSongMaintenanceController.selectedSong.songname}" maxlength="200" />
+                        <h:outputText value="Album" />
+                        <p:inputText value="#{userSongMaintenanceController.selectedSong.album}" maxlength="200"/>
+                        <h:outputText value="Other Details" />
+                        <p:inputTextarea rows="5" cols="30" value="#{userSongMaintenanceController.selectedSong.otherdetails}" />
+                        <h:outputText value="Given Tālā:" />
+                        <p:inputText value="#{userSongMaintenanceController.selectedSong.givenTaala}" maxlength="20"/>
+                        <h:outputText value="Given Tempo" />
+                        <p:inputText value="#{userSongMaintenanceController.selectedSong.givenTempo}" maxlength="20"/>
+                        <p:commandButton action="#{userSongMaintenanceController.updateSong()}" value="Update">
+                        </p:commandButton>
+                    </p:panelGrid>
+                        </h:form> 
+                </p:outputPanel>
+            
+        </p:dialog>        
+    </ui:define>
+
+</ui:composition>

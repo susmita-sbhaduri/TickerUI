@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <p:toolbar>
+
+
+        <f:facet name="left">
+
+            <h:graphicImage library="img" name="logo.png" height="35px" />
+
+        </f:facet>
+        <f:facet name="right">
+            <h:form rendered="#{loginController.userAuthBean.userId ne null}" style="float: right">
+                <p:outputLabel style="padding-right: 10px" value="Welcome #{loginController.userAuthBean.name}"></p:outputLabel>
+                <p:commandButton action="#{loginController.logout()}" id="iconOnly" icon="ui-icon-power" title="Log out" />
+            </h:form>
+        </f:facet>
+    </p:toolbar>
+</ui:composition>

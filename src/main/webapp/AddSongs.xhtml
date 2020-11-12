@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+        
+        <h:form enctype="multipart/form-data" id="addsongform"  >
+            <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+            <p:panel id="pnl">
+            <p:panelGrid   columns="2" layout="grid" style="margin-bottom:20px" >
+                <h:outputLabel for="songname" value="Song Name *" />
+                <p:inputText id="songname" value="#{addSongController.songDetailsDTO.songname}" required="true" label="songname" maxlength="200"/>
+
+                <h:outputLabel for="giventaala" value="Tālā *" />
+                <p:inputText id="giventaala" value="#{addSongController.songDetailsDTO.givenTaala}" required="true" label="giventaala" maxlength="20" />
+
+                <h:outputLabel for="giventempo" value="Tempo" />
+                <p:inputText id="giventempo" value="#{addSongController.songDetailsDTO.givenTempo}"  label="giventempo" maxlength="20" />
+                
+                <h:outputLabel for="album" value="Album" />
+                <p:inputText id="album" value="#{addSongController.songDetailsDTO.album}"  label="album" maxlength="200"/>
+                
+                <h:outputLabel for="otherdetails" value="Other Details" />
+                <p:inputTextarea rows="5" cols="30" id="otherdetails" value="#{addSongController.songDetailsDTO.otherdetails}"  label="otherdetails" />
+                
+                <h:outputLabel for="songfile" value="Select File *" />
+                <p:fileUpload id="songfile" required="true" styleClass="black-button" 
+                              allowTypes="/(\.|\/)(wav)$/" mode="advanced" multiple="false"  
+                              fileLimit="1" label="songfile" update="growl" sizeLimit="5800000"
+                              fileUploadListener="#{addSongController.handleFileUpload}"/>
+                              
+                
+                
+                
+            </p:panelGrid>
+                <p:commandButton id="AddButton" styleClass="black-button" icon="fa fa-plus"   onclick="PF('bui').show()" value="Add Song" ajax="false"  update="growl" action="#{addSongController.addSong()}"></p:commandButton>
+            </p:panel>
+            <p:blockUI block="pnl" widgetVar="bui" trigger="AddButton">
+                <p:graphicImage name="images/wait.gif" library="taalmaan" width="230px" height="130px"/>
+            </p:blockUI>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

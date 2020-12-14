@@ -14,5 +14,4 @@ import org.hedwig.cloud.dto.HedwigAuthCredentials;
  */
 public class TaalMaanAuthCredtialValue {
     public static HedwigAuthCredentials AUTH_CREDENTIALS;
-    
 }

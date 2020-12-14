@@ -19,7 +19,7 @@ public class TaalMaanAuthentication {
     public static DataConnDTO authenticateSubcription(HedwigAuthCredentials authCredentials) {
         int productId = authCredentials.getProductId();
         int tenantId = authCredentials.getTenantId();
-        DataConnClient dataConnClient = new DataConnClient();
+        DataConnClient dataConnClient = new DataConnClient(authCredentials.getHedwigServer(),authCredentials.getHedwigServerPort());
         DataConnDTO dataConnDTO = new DataConnDTO();
         dataConnDTO.setCloudAuthCredentials(authCredentials);
         dataConnDTO = dataConnClient.getDataConnParams(dataConnDTO);

@@ -18,6 +18,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import org.hedwig.cloud.client.TenantListClient;
 import org.hedwig.cloud.client.UserAuthClient;
@@ -43,7 +45,8 @@ public class LoginController implements Serializable {
     private String password;
     private UserAuthDTO userAuthDTO;
     private List<SelectItem> tenantMap;
-
+    @Inject
+    private ServletContext context;
     /**
      * Creates a new instance of LoginController
      */
@@ -56,7 +59,9 @@ public class LoginController implements Serializable {
     }
 
     public void fillLOginFormValues() {
-        TenantListClient dgrftlc = new TenantListClient();
+        String hedwigServer = context.getInitParameter("HedwigServerName");
+        String hedwigServerPort = context.getInitParameter("HedwigServerPort");
+        TenantListClient dgrftlc = new TenantListClient(hedwigServer,hedwigServerPort);
         List<TenantDTO> tenantDTOs = dgrftlc.getTenantList(productID);
         tenantMap = tenantDTOs.stream().map(tenant -> {
             SelectItem selectItem = new SelectItem(tenant.getTenantId(), tenant.getName());
@@ -66,12 +71,16 @@ public class LoginController implements Serializable {
     }
 
     public String login() {
-
-        UserAuthClient uac = new UserAuthClient();
+        
+        String hedwigServer = context.getInitParameter("HedwigServerName");
+        String hedwigServerPort = context.getInitParameter("HedwigServerPort");
+        userAuthDTO.setHedwigServer(hedwigServer);
+        userAuthDTO.setHedwigServerPort(hedwigServerPort);
         userAuthDTO.setUserId(userID);
         userAuthDTO.setPassword(password);
         userAuthDTO.setProductId(productID);
         userAuthDTO.setTenantId(tenantID);
+        UserAuthClient uac = new UserAuthClient(userAuthDTO.getHedwigServer(),userAuthDTO.getHedwigServerPort());
         userAuthDTO = uac.authenticateUser(userAuthDTO);
         FacesMessage message;
         
@@ -96,7 +105,9 @@ public class LoginController implements Serializable {
     public String moveToDefaultHost() {
         productID = 2;
 
-        TenantListClient dgrftlc = new TenantListClient();
+        String hedwigServer = context.getInitParameter("HedwigServerName");
+        String hedwigServerPort = context.getInitParameter("HedwigServerPort");
+        TenantListClient dgrftlc = new TenantListClient(hedwigServer,hedwigServerPort);
         List<TenantDTO> tenantDTOs = dgrftlc.getTenantList(productID);
         if (tenantDTOs == null) {
             return "/access.xhtml?faces-redirect=true";
@@ -121,6 +132,8 @@ public class LoginController implements Serializable {
         authCredentials.setPassword(userAuthDTO.getPassword());
         authCredentials.setProductId(productID);
         authCredentials.setTenantId(tenantID);
+        authCredentials.setHedwigServer(userAuthDTO.getHedwigServer());
+        authCredentials.setHedwigServerPort(userAuthDTO.getHedwigServerPort());
         TaalMaanAuthCredtialValue.AUTH_CREDENTIALS = authCredentials;
     }
 

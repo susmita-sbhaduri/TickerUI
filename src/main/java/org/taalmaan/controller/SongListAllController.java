@@ -13,11 +13,12 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 import org.hedwig.cloud.client.DataConnClient;
 import org.hedwig.cloud.dto.DataConnDTO;
+import org.hedwig.cloud.dto.HedwigAuthCredentials;
 import org.taalmaan.utils.DatabaseConnection;
 import org.taalmaan.utils.TaalMaanAuthCredtialValue;
-import org.taalmaan.utils.UserCredential;
 import org.taalmaan.bean.model.SongDetailsDTO;
 import org.taalmaan.services.TaalMaanServices.SongDataService;
 
@@ -33,7 +34,8 @@ public class SongListAllController implements Serializable {
     private SongDetailsDTO selectedSong;
     @Inject
     LoginController loginController;
-
+    @Inject
+    private ServletContext context;
     /**
      * Creates a new instance of SongListAllController
      */
@@ -42,7 +44,7 @@ public class SongListAllController implements Serializable {
     }
     
     public void fetchProcessedSongList() {
-
+        setAuthCredentials();
         boolean authProduct = authProduct();
         if (authProduct) {
             SongDataService sd = new SongDataService();
@@ -70,10 +72,11 @@ public class SongListAllController implements Serializable {
     }
 
     private boolean authProduct() {
+        HedwigAuthCredentials authCredentials = new HedwigAuthCredentials();
         
         DataConnDTO dataConnDTO = new DataConnDTO();
         dataConnDTO.setCloudAuthCredentials(TaalMaanAuthCredtialValue.AUTH_CREDENTIALS);
-        DataConnClient dataConnClient = new DataConnClient();
+        DataConnClient dataConnClient = new DataConnClient(TaalMaanAuthCredtialValue.AUTH_CREDENTIALS.getHedwigServer(),TaalMaanAuthCredtialValue.AUTH_CREDENTIALS.getHedwigServerPort());
         dataConnDTO = dataConnClient.getDataConnParams(dataConnDTO);
 
         FacesMessage message;
@@ -89,6 +92,17 @@ public class SongListAllController implements Serializable {
 
         return true;
     }
-    
+    private void setAuthCredentials () {
+        HedwigAuthCredentials authCredentials = new HedwigAuthCredentials();
+        String hedwigServer = context.getInitParameter("HedwigServerName");
+        String hedwigServerPort = context.getInitParameter("HedwigServerPort");
+        authCredentials.setUserId("susmita");
+        authCredentials.setPassword("1234");
+        authCredentials.setProductId(2);
+        authCredentials.setTenantId(1);
+        authCredentials.setHedwigServer(hedwigServer);
+        authCredentials.setHedwigServerPort(hedwigServerPort);
+        TaalMaanAuthCredtialValue.AUTH_CREDENTIALS = authCredentials;
+    }
 
 }

@@ -11,12 +11,12 @@ package org.taalmaan.utils;
  */
 public class UserCredential {
 
-    public static String USER_ID = "susmita";
-    public static String PASSWORD = "1234";
-    public static Integer PRODUCT_ID = 2;
-    public static Integer TENANT_ID = 1;
-
-    public UserCredential() {
-    }
+//    public static String USER_ID = "susmita";
+//    public static String PASSWORD = "1234";
+//    public static Integer PRODUCT_ID = 2;
+//    public static Integer TENANT_ID = 1;
+//
+//    public UserCredential() {
+//    }
 
 }

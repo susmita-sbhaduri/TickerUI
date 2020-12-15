@@ -117,7 +117,7 @@ public class LoginController implements Serializable {
             tenantID = 1;
         }
         List<TenantDTO> tenantDTOMatched = tenantDTOs.stream().filter(tenant -> tenant.getTenantId() == tenantID).collect(Collectors.toList());
-        setAuthCredentials();
+        //setAuthCredentials();
         if (tenantDTOMatched.isEmpty()) {
             return "/access.xhtml?faces-redirect=true";
         }

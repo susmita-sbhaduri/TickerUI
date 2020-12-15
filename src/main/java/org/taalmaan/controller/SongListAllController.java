@@ -72,7 +72,7 @@ public class SongListAllController implements Serializable {
     }
 
     private boolean authProduct() {
-        HedwigAuthCredentials authCredentials = new HedwigAuthCredentials();
+        //HedwigAuthCredentials authCredentials = new HedwigAuthCredentials();
         
         DataConnDTO dataConnDTO = new DataConnDTO();
         dataConnDTO.setCloudAuthCredentials(TaalMaanAuthCredtialValue.AUTH_CREDENTIALS);

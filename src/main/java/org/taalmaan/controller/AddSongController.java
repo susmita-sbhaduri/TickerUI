@@ -22,7 +22,7 @@ import org.taalmaan.params.DBResponse;
 import org.taalmaan.bean.model.SongDetailsDTO;
 import org.taalmaan.services.TaalMaanServices.SongDataService;
 import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.UploadedFile;
+import org.primefaces.model.file.UploadedFile;
 
 /**
  *
@@ -92,7 +92,7 @@ public class AddSongController implements Serializable {
         byte[] bytes = null;
 
         if (null != uploadedSong) {
-            bytes = uploadedSong.getContents();
+            bytes = uploadedSong.getContent();
             String tempPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/");
             
             FileOutputStream fo;

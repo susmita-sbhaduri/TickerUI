@@ -28,7 +28,7 @@
                     <f:viewAction action="#{loginController.fillLOginFormValues()}" />
                 </f:metadata>
                 <h:form>
-                    <p:growl id="growl" sticky="true" showDetail="true" life="5" autoUpdate="true" />
+                    <p:growl id="growl" sticky="true" showDetail="true" life="5"  />
                     <div class="ui-g ui-fluid" style="text-align: left">
                         <div class="ui-g-6">
                             <p:outputLabel value="Select Tenant:" />
@@ -48,7 +48,7 @@
 
 
                         <div class="ui-g-12">
-                            <p:commandButton styleClass="black-button" action="#{loginController.login}" value="Login" icon="fa fa-check" />
+                            <p:commandButton styleClass="black-button" action="#{loginController.login}" value="Login" icon="fa fa-check" update="@form"/>
                         </div>
                         <div class="ui-g-12 ui-md-6">
                             <p:commandButton  styleClass="brown-button" action="#{loginController.goToUserRegister()}" value="Register" immediate="true"/>

@@ -52,7 +52,7 @@
                     <f:viewAction action="#{songListAllController.fetchProcessedSongList()}" />
                 </f:metadata>
                 <h:form id="songdatatable" style="padding-left: 1%;padding-right: 1%;">
-                    <p:growl id="growl" sticky="true" showDetail="true" life="5" autoUpdate="true" />
+                    <p:growl id="growl" sticky="true" showDetail="true" life="5" />
                     <p:dataTable id="songalltable" var="song" value="#{songListAllController.processedSongList}" reflow="true" paginator="true" rows="10">
                         <p:column filterBy="#{song.songname}" headerText="Song Name" width="15%" filterMatchMode="contains">
 
@@ -69,7 +69,7 @@
                             <p:outputLabel value="#{song.detectedtala}" style="color: black;"/>
                         </p:column>                    
                         <p:column headerText="Details" width="15%">
-                            <p:commandButton  icon="fa fa-info" styleClass="black-button" update=":songDetail" oncomplete="PF('songDetailDialog').show()"  title="View Details">
+                            <p:commandButton  icon="fa fa-info" styleClass="black-button" update=":songDetail" oncomplete="PF('songDetailDialog').show()"  title="View Details" update="@form">
                                 <f:setPropertyActionListener value="#{song}" target="#{songListAllController.selectedSong}" />
 
                             </p:commandButton>

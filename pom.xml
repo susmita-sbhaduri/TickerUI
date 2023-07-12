@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.taalmaan</groupId>
-    <artifactId>TaalMaan</artifactId>
+    <artifactId>TickerUI</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>TaalMaan</name>
+    <name>TickerUI</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
@@ -41,23 +41,9 @@
             <version>2.5.2</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.hedwig.cloud</groupId>
-            <artifactId>HedwigDTO</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>org.hedwig.cloud</groupId>
-            <artifactId>HedwigClient</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>org.sonorus</groupId>
-            <artifactId>WavRead</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
+
+
+
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>

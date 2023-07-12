@@ -47,11 +47,7 @@ public class MenuController {
             DefaultMenuItem processSong = new DefaultMenuItem("Detect Tālā");
             processSong.setOutcome("ProcessSong");
             menuModel.addElement(processSong);
-            if (loginController.getUserAuthDTO().getRoleId() == 1) {
-                DefaultMenuItem deletedSongs = new DefaultMenuItem("Deleted Songs");
-                deletedSongs.setOutcome("DeletedSongs");
-                menuModel.addElement(deletedSongs);
-            }
+
         }
     }
 

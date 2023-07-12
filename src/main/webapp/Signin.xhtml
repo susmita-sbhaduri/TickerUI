@@ -13,7 +13,7 @@
         </f:facet>
 
         <title>Tāl Mān</title>
-        <link rel="shortcut icon" type="image/x-icon" href="#{resource['taalmaan/images/logo.png']}"/>
+        <link rel="shortcut icon" type="image/x-icon" href="#{resource['tickerui/images/logo.png']}"/>
     </h:head>
 
     <h:body styleClass="login-body">
@@ -24,7 +24,7 @@
             <div id="register-container">
                 <span class="title">Tāl Mān Login</span>
                 <f:metadata>
-                    <f:viewParam name="product" value="#{loginController.productID}"/>
+                    
                     <f:viewAction action="#{loginController.fillLOginFormValues()}" />
                 </f:metadata>
                 <h:form>
@@ -33,12 +33,7 @@
                         <div class="ui-g-6">
                             <p:outputLabel value="Select Tenant:" />
                         </div>
-                        <div class="ui-g-6">
-                            <p:selectOneMenu id="selectonetenant" value="#{loginController.tenantID}" required="true">
-                                <f:selectItem itemLabel="Select tenant" itemValue="" noSelectionOption="true" />
-                                <f:selectItems value="#{loginController.tenantMap}" />
-                            </p:selectOneMenu>
-                        </div>
+
                         <div class="ui-g-12">
                             <p:inputText placeholder="Username" value="#{loginController.userID}" required="true"/>
                         </div>
@@ -50,9 +45,7 @@
                         <div class="ui-g-12">
                             <p:commandButton styleClass="black-button" action="#{loginController.login}" value="Login" icon="fa fa-check" update="@form"/>
                         </div>
-                        <div class="ui-g-12 ui-md-6">
-                            <p:commandButton  styleClass="brown-button" action="#{loginController.goToUserRegister()}" value="Register" immediate="true"/>
-                        </div>
+
                         <div class="ui-g-12 ui-md-6">
                             <p:button styleClass="black-button" value="Home" outcome="index?faces-redirect=true"/>
                         </div>
@@ -64,7 +57,7 @@
         </div>
 
         <h:outputStylesheet name="css/layout.css" library="omega-layout" />
-        <h:outputStylesheet name="css/taalmaan.css" library="taalmaan" />
+        <h:outputStylesheet name="css/tickerui.css" library="tickerui" />
     </h:body>
 
 </html>

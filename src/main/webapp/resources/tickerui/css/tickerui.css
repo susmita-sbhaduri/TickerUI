@@ -1,6 +1,6 @@
 .landing-wrapper #introduction {
 
-    background-image: url("#{resource['taalmaan:images/taalmaan.jpg']}");
+    background-image: url("#{resource['tickerui:images/taalmaan.jpg']}");
 }
 .landing-wrapper .landing-header {
     height: 56px;

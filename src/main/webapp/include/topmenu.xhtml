@@ -14,8 +14,8 @@
 
         </f:facet>
         <f:facet name="right">
-            <h:form rendered="#{loginController.userAuthBean.userId ne null}" style="float: right">
-                <p:outputLabel style="padding-right: 10px" value="Welcome #{loginController.userAuthBean.name}"></p:outputLabel>
+            <h:form rendered="#{loginController.userID ne null}" style="float: right">
+                <p:outputLabel style="padding-right: 10px" value="Welcome #{loginController.userID}"></p:outputLabel>
                 <p:commandButton action="#{loginController.logout()}" id="iconOnly" icon="ui-icon-power" title="Log out" />
             </h:form>
         </f:facet>

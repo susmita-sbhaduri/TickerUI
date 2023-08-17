@@ -1,32 +1,40 @@
-<ui:composition 
+<ui:composition
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://primefaces.org/ui"
     xmlns:po="http://primefaces.org/omega">
-
-    <div class="sidebar">
-        <div class="nano">
-            <div class="nano-content sidebar-scroll-content">
-
-
+    <h:form id="menuform">
+        <div class="sidebar">
+            <div class="sidebar-scroll-content">
+                <div class="logo">
+                    
+                        <p:graphicImage name="images/logo.png" library="tickerui" width="40"/>
+                    
+                </div>
                 <div class="profile">
                     <p:graphicImage name="images/yolllogo.png" library="tickerui" />
                     <a id="profile-button" href="#">
-                        <span class="username">#{loginController.userID}</span>
-                        
+                        <span class="username">Susmita</span>
+                        <i class="pi pi-fw pi-cog"/>
                     </a>
-                    
+                    <ul>
+                        <li><a href="#"><i class="pi pi-fw pi-sliders-h"/><span>Account</span></a></li>
+                        <li><a href="#"><i class="pi pi-fw pi-bell"/><span>Notifications</span><span class="menu-badge">2</span></a></li>
+                        <li><a href="#"><i class="pi pi-fw pi-sign-out"/><span>Logout</span></a></li>
+                    </ul>
                 </div>
-
                 <div class="menu">
-                    <po:menu model="#{menuController.menuModel}">
+                    <po:menu widgetVar="OmegaMenuWidget">
+                        <p:menuitem id="calllist" value="Call List" icon="pi pi-fw pi-home" outcome="AddSongs"/>
+                        <p:menuitem id="g_call" value="Generate Call" icon="pi pi-fw pi-home" outcome="AddSongs"/>
+                        <p:menuitem id="v_call" value="Validate" icon="pi pi-fw pi-home" outcome="AddSongs"/>
+                            
                         
                     </po:menu>
                 </div>
             </div>
         </div>
-    </div>
-
+    </h:form>
 </ui:composition>

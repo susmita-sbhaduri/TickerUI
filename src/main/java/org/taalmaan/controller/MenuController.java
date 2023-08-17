@@ -38,15 +38,17 @@ public class MenuController {
         } else {
             menuModel = new DefaultMenuModel();
             
-            DefaultMenuItem addSong = new DefaultMenuItem("Add Song");
+            DefaultMenuItem addSong = new DefaultMenuItem();
+            addSong.setTitle("Add Song");
             addSong.setOutcome("AddSongs");
-            menuModel.addElement(addSong);
-            DefaultMenuItem manageSong = new DefaultMenuItem("Manage Songs");
-            manageSong.setOutcome("SonglistUser");
-            menuModel.addElement(manageSong);
-            DefaultMenuItem processSong = new DefaultMenuItem("Detect Tālā");
-            processSong.setOutcome("ProcessSong");
-            menuModel.addElement(processSong);
+            menuModel.getElements().add(0, addSong);
+            
+            DefaultMenuItem manageSong = new DefaultMenuItem();
+            addSong.setTitle("Manage Song");
+            addSong.setOutcome("SonglistUser");
+            menuModel.getElements().add(0, manageSong);
+            
+            
 
         }
     }

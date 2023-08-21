@@ -24,16 +24,12 @@
             <div id="register-container">
                 <span class="title">Tāl Mān Login</span>
                 <f:metadata>
-                    
+
                     <f:viewAction action="#{loginController.fillLOginFormValues()}" />
                 </f:metadata>
                 <h:form>
                     <p:growl id="growl" sticky="true" showDetail="true" life="5"  />
                     <div class="ui-g ui-fluid" style="text-align: left">
-                        <div class="ui-g-6">
-                            <p:outputLabel value="Select Tenant:" />
-                        </div>
-
                         <div class="ui-g-12">
                             <p:inputText placeholder="Username" value="#{loginController.userID}" required="true"/>
                         </div>

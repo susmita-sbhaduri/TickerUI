@@ -4,18 +4,24 @@
  */
 package org.taalmaan.controller;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import org.apache.commons.io.input.ReversedLinesFileReader;
@@ -47,42 +53,74 @@ public class LandingNifty implements Serializable {
 
     @PostConstruct
     public void init() {
-        //populateNifty();
+        populateNifty();
     }
 
     public LineChartModel getLineModel() {
         return lineModel;
     }
 
-    public LineChartModel populateNifty() {
+    public LineChartModel populateNifty(){
 //        lastNifty = "50";
+//        values.add(65);
+//        values.add(59);
+//        values.add(80);
+//        values.add(81);
+//        values.add(56);
+//        values.add(55);
+//        values.add(40);
+        
+
+//        labels.add("January");
+//        labels.add("February");
+//        labels.add("March");
+//        labels.add("April");
+//        labels.add("May");
+//        labels.add("June");
+//        labels.add("July");
+        
+
+        String fileName = "/home/sb/Documents/testi_midday/mid_csv/tarang_23Aug_m.csv";
+        List<RecordMinute> minuteDataForInterval = new ArrayList<>();
+        RecordMinute record = new RecordMinute();
+        String formattedDate;        
+        String line;
+        
+        try {
+//            object = new ReversedLinesFileReader(file); 
+            BufferedReader brPrev = new BufferedReader(new FileReader(fileName));  
+            line = brPrev.readLine();
+            while ((line = brPrev.readLine()) != null) {
+                record = createMinuteDataRec(line);
+                minuteDataForInterval.add(record);
+                record = new RecordMinute();
+
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(LandingNifty.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         lineModel = new LineChartModel();
         ChartData data = new ChartData();
 
         LineChartDataSet dataSet = new LineChartDataSet();
         List<Object> values = new ArrayList<>();
-        values.add(65);
-        values.add(59);
-        values.add(80);
-        values.add(81);
-        values.add(56);
-        values.add(55);
-        values.add(40);
+        
+        List<String> labels = new ArrayList<>();
+        
+        for (int k = minuteDataForInterval.size()-11; k < minuteDataForInterval.size(); k++) {
+            values.add(Double.toString(minuteDataForInterval.get(k).getDaylastprice()));
+            DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+            formattedDate = targetFormat.format(minuteDataForInterval.get(k).getLastUpdateTime());
+            labels.add(formattedDate);
+        }
         dataSet.setData(values);
         dataSet.setFill(false);
         dataSet.setLabel("My First Dataset");
         dataSet.setBorderColor("rgb(75, 192, 192)");
         dataSet.setTension(0.1);
         data.addChartDataSet(dataSet);
-
-        List<String> labels = new ArrayList<>();
-        labels.add("January");
-        labels.add("February");
-        labels.add("March");
-        labels.add("April");
-        labels.add("May");
-        labels.add("June");
-        labels.add("July");
+        
         data.setLabels(labels);
 
         //Options
@@ -90,7 +128,7 @@ public class LandingNifty implements Serializable {
 //        options.setMaintainAspectRatio(false);
         Title title = new Title();
         title.setDisplay(true);
-        title.setText("Line Chart");
+        title.setText("Nifty 50 Chart");
         options.setTitle(title);
 
         Title subtitle = new Title();
@@ -100,38 +138,6 @@ public class LandingNifty implements Serializable {
 
         lineModel.setOptions(options);
         lineModel.setData(data);
-
-//        File file = new File("/home/sb/Documents/testi_midday/mid_csv/tarang_21Aug_m.csv");
-//        List<RecordMinute> minuteDataForInterval = new ArrayList<>();
-//        RecordMinute record = new RecordMinute();
-//        long noOfLines = -1;
-//        int counter = 0;
-//        String lineFromLast;
-//        
-//        String[] fields = null;
-//        ReversedLinesFileReader object = null;
-//        try {
-//            object = new ReversedLinesFileReader(file);           
-//            
-//        } catch (IOException ex) {
-//            Logger.getLogger(LandingNifty.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        
-//        while(counter<15) {
-//            try {
-//                lineFromLast = object.readLine();
-//                fields = lineFromLast.split(",");
-//                if (fields[0].equals("NIFTY 50")) {
-//                    counter = counter+1;
-//                    record = createMinuteDataRec(lineFromLast);
-//                    minuteDataForInterval.add(record);
-//                    record = new RecordMinute();                    
-//                }
-//                
-//            } catch (IOException ex) {
-//                Logger.getLogger(LandingNifty.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
         return lineModel;
     }
 

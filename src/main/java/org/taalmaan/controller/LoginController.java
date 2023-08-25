@@ -55,6 +55,8 @@ public class LoginController implements Serializable {
 //        }).collect(Collectors.toList());
 
     }
+    
+    
 
     public String login() {
         
@@ -115,6 +117,7 @@ public class LoginController implements Serializable {
         return "/Landing.xhtml?faces-redirect=true";
 
     }
+    
     
 //    private void setAuthCredentials () {
 //        HedwigAuthCredentials authCredentials = new HedwigAuthCredentials();

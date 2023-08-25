@@ -3,7 +3,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 template="./WEB-INF/template.xhtml"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:define name="content">
         <style>
@@ -12,12 +13,22 @@
             }
         </style>
         <div class="card">
-            <p:lineChart  model="#{landingNifty.lineModel}" style="width: 100%; height: 500px;"/> 
+            <p:lineChart  model="#{generatedCall.lineModel}" style="width: 100%; height: 500px;"/> 
         </div>
         
+        <f:metadata>
+            <f:viewAction action="#{GeneratedCall.fillLOginFormValues()}" />
+        </f:metadata>
+        
+        <style>
+            .ui-chart {
+                margin-bottom: 50px;
+            }
+        </style>
         <div class="card">
-            <p:button styleClass="black-button" outcome="GeneratedCall" value="Generate Call" icon="fa fa-check"/>
+            <p:lineChart  model="#{landingNifty.lineModel}" style="width: 100%; height: 500px;"/> 
         </div>
+                
     </ui:define>
 
 </ui:composition>

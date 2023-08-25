@@ -8,27 +8,28 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import javax.inject.Named;
-import javax.faces.view.ViewScoped;
 import java.io.Serializable;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
-import org.bhaduri.datatransfer.DTO.*;
+import javax.inject.Named;
+import javax.enterprise.context.Dependent;
+import javax.faces.view.ViewScoped;
+import org.bhaduri.datatransfer.DTO.DataStoreNames;
 import static org.bhaduri.datatransfer.DTO.DataStoreNames.TICKER_DATA_NIFTY;
-import org.primefaces.model.charts.line.LineChartModel;
+import org.bhaduri.datatransfer.DTO.RecordCallPrice;
+import org.bhaduri.datatransfer.DTO.RecordMinute;
 import org.primefaces.model.charts.ChartData;
 import org.primefaces.model.charts.line.LineChartDataSet;
+import org.primefaces.model.charts.line.LineChartModel;
 import org.primefaces.model.charts.line.LineChartOptions;
 import org.primefaces.model.charts.optionconfig.title.Title;
 
@@ -36,48 +37,33 @@ import org.primefaces.model.charts.optionconfig.title.Title;
  *
  * @author sb
  */
-@Named(value = "landingNifty")
+@Named(value = "generatedCall")
 @ViewScoped
 @ManagedBean
-public class LandingNifty implements Serializable {
-
-    private LineChartModel lineModel;
+public class GeneratedCall implements Serializable {
 
     /**
-     * Creates a new instance of LandingNifty
+     * Creates a new instance of GenerateLastCall
      */
-//    public void setLineModel(LineChartModel lineModel) {
-//        this.lineModel = lineModel;
-//    }
-
+    private LineChartModel lineModel;
+    private RecordCallPrice generatedCalls;
+    
     @PostConstruct
     public void init() {
         populateNifty();
+        generatIntradayCall();
     }
 
     public LineChartModel getLineModel() {
         return lineModel;
     }
 
-    public LineChartModel populateNifty(){
-//        lastNifty = "50";
-//        values.add(65);
-//        values.add(59);
-//        values.add(80);
-//        values.add(81);
-//        values.add(56);
-//        values.add(55);
-//        values.add(40);
-        
-
-//        labels.add("January");
-//        labels.add("February");
-//        labels.add("March");
-//        labels.add("April");
-//        labels.add("May");
-//        labels.add("June");
-//        labels.add("July");
-        
+    public RecordCallPrice getGeneratedCalls() {
+        return generatedCalls;
+    }
+      
+    
+    public LineChartModel populateNifty(){     
 
         String fileName = TICKER_DATA_NIFTY;
         List<RecordMinute> minuteDataForInterval = new ArrayList<>();
@@ -138,7 +124,14 @@ public class LandingNifty implements Serializable {
         lineModel.setData(data);
         return lineModel;
     }
-
+  
+    
+    public RecordCallPrice generatIntradayCall() {
+        File directory = new File(DataStoreNames.TICKER_DATA_DETAILS);
+        List listFileArray = Arrays.asList(directory.list());
+        Collections.sort(listFileArray); //directories are sorted as per their name
+        int dirCount = listFileArray.size();
+    }
     private RecordMinute createMinuteDataRec(String lineFromFile) {
         RecordMinute record = new RecordMinute();
         String[] fields = null;

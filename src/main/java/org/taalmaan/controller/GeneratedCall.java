@@ -4,6 +4,7 @@
  */
 package org.taalmaan.controller;
 
+import org.bhaduri.generatecall.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -15,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,10 +25,12 @@ import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.Dependent;
 import javax.faces.view.ViewScoped;
+import org.bhaduri.datatransfer.DTO.CsvTickData;
 import org.bhaduri.datatransfer.DTO.DataStoreNames;
 import static org.bhaduri.datatransfer.DTO.DataStoreNames.TICKER_DATA_NIFTY;
 import org.bhaduri.datatransfer.DTO.RecordCallPrice;
 import org.bhaduri.datatransfer.DTO.RecordMinute;
+import org.bhaduri.datatransfer.DTO.ResultData;
 import org.primefaces.model.charts.ChartData;
 import org.primefaces.model.charts.line.LineChartDataSet;
 import org.primefaces.model.charts.line.LineChartModel;
@@ -100,7 +104,7 @@ public class GeneratedCall implements Serializable {
         }
         dataSet.setData(values);
         dataSet.setFill(false);
-        dataSet.setLabel("My First Dataset");
+        dataSet.setLabel("Nifty 50 Chart");
         dataSet.setBorderColor("rgb(75, 192, 192)");
         dataSet.setTension(0.1);
         data.addChartDataSet(dataSet);
@@ -126,11 +130,33 @@ public class GeneratedCall implements Serializable {
     }
   
     
-    public RecordCallPrice generatIntradayCall() {
+    public List<RecordCallPrice> generatIntradayCall() {
         File directory = new File(DataStoreNames.TICKER_DATA_DETAILS);
         List listFileArray = Arrays.asList(directory.list());
         Collections.sort(listFileArray); //directories are sorted as per their name
         int dirCount = listFileArray.size();
+        String scripFolderPath = "";
+        String[] delimitedString;
+        List<RecordCallPrice> resultDatas = new ArrayList<RecordCallPrice>(); // call list for the last and 
+//        previous days file using elliot curve algo
+        DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        String formattedDate = "";
+        for (int i = 0; i < dirCount; i++) {
+            scripFolderPath = DataStoreNames.TICKER_DATA_DETAILS.concat(listFileArray.get(i).toString());
+            scripFolderPath = scripFolderPath.concat("/");
+            File fileListPerScrip = new File(scripFolderPath);
+            File[] arrayPerScrip = fileListPerScrip.listFiles();
+            System.out.println(arrayPerScrip[0]);
+            
+            String scripId = listFileArray.get(i).toString();
+            String scripLast = arrayPerScrip[0].getAbsolutePath();
+            CsvTickData recordDataLast = new CsvTickData();
+            recordDataLast = readCSVData(scripLast);
+//            formattedDate = targetFormat.format(recordDataLast.getDateTime());
+            resultDatas.add(fillResult(recordDataLast.getTickData(), scripId, recordDataLast.getDateTime()));
+            
+        }
+        return resultDatas;
     }
     private RecordMinute createMinuteDataRec(String lineFromFile) {
         RecordMinute record = new RecordMinute();
@@ -152,4 +178,85 @@ public class GeneratedCall implements Serializable {
 
         return record;
     }
+    
+    private CsvTickData readCSVData(String csvPath) {
+        CsvTickData retCsvTickData = new CsvTickData();
+        DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+
+        String line;
+        double index = 1;
+        List<List<Double>> recordData = new ArrayList<>();
+        List<Double> row = new ArrayList<>();
+        String[] fields = null;
+        try {
+            BufferedReader brPrev = new BufferedReader(new FileReader(csvPath));
+            line = brPrev.readLine();
+            while ((line = brPrev.readLine()) != null) {
+                row = new ArrayList<>();
+                // use comma as separator  
+                fields = line.split(",");
+                //fields will now contain all values    
+                row.add(index);
+                row.add(Double.valueOf(fields[3]));
+
+                recordData.add(row);
+                index = index + 1;
+            }
+            retCsvTickData.setTickData(recordData);
+            try {
+                retCsvTickData.setDateTime(targetFormat.parse(fields[1]));
+            } catch (ParseException ex) {
+                ex.printStackTrace();
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return retCsvTickData;
+    }
+    
+    private RecordCallPrice fillResult(List<List<Double>> recordData, String scripId, Date lastUpdateDate) {
+
+        int callCount = 3;
+        Smoothing smoothing = new Smoothing(recordData, callCount);
+        List<SmoothData> smoothData = new ArrayList<SmoothData>();
+        smoothData = smoothing.genCall();
+        RecordCallPrice eachResultData = new RecordCallPrice();
+        Double thresHold;
+        thresHold = (0.5 / 100) * (recordData.get(recordData.size() - 1).get(1))
+                + ((0.5 / 100) * recordData.get(recordData.size() - 1).get(1)) * 18 / 100;
+
+        eachResultData.setScripID(scripId);//to be fixed        
+        eachResultData.setLastUpdateTime(lastUpdateDate);//to be fixed
+        eachResultData.setPrice(recordData.get(recordData.size() - 1).get(1));
+        eachResultData.setLastCallVersionOne(smoothData.get(2).getCallArrayOne());
+        eachResultData.setLastCallVersionTwo(smoothData.get(2).getCallArrayTwo());
+        eachResultData.setTallyVersionOne("");
+        eachResultData.setTallyVersionTwo("");
+        eachResultData.setRetraceVersionOne(smoothData.get(2).getRetraceOne());
+        eachResultData.setRetraceVersionTwo(smoothData.get(2).getRetraceTwo());
+        
+        if (smoothData.get(2).getCallArrayOne().equals("buy")) {
+            eachResultData.setPriceBrokerageGstOne(recordData.get(recordData.size() - 1).get(1) + thresHold);
+        } else {
+            if (smoothData.get(2).getCallArrayOne().equals("sell")) {
+                eachResultData.setPriceBrokerageGstOne(recordData.get(recordData.size() - 1).get(1) - thresHold);
+            } else {
+                eachResultData.setPriceBrokerageGstOne(recordData.get(recordData.size() - 1).get(1));
+            }
+        }
+
+        if (smoothData.get(2).getCallArrayTwo().equals("buy")) {
+            eachResultData.setPriceBrokerageGstTwo(recordData.get(recordData.size() - 1).get(1) + thresHold);
+        } else {
+            if (smoothData.get(2).getCallArrayTwo().equals("sell")) {
+                eachResultData.setPriceBrokerageGstTwo(recordData.get(recordData.size() - 1).get(1) - thresHold);
+            } else {
+                eachResultData.setPriceBrokerageGstTwo(recordData.get(recordData.size() - 1).get(1));
+            }
+        }
+
+//        System.out.println("recordTest:" + records.get(records.size() - 1).get(1));
+        return eachResultData;
+    }
+
 }

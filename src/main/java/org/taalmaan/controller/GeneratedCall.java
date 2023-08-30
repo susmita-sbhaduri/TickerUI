@@ -50,8 +50,8 @@ public class GeneratedCall implements Serializable {
      * Creates a new instance of GenerateLastCall
      */
     private LineChartModel lineModel;
-    private RecordCallPrice generatedCalls;
-    
+    private String infoText;
+        
     @PostConstruct
     public void init() {
         populateNifty();
@@ -62,101 +62,57 @@ public class GeneratedCall implements Serializable {
         return lineModel;
     }
 
-    public RecordCallPrice getGeneratedCalls() {
-        return generatedCalls;
+    public String getInfoText() {
+        return infoText;
     }
-      
+     
     
-    public LineChartModel populateNifty(){     
-
-        String fileName = TICKER_DATA_NIFTY;
-        List<RecordMinute> minuteDataForInterval = new ArrayList<>();
-        RecordMinute record = new RecordMinute();
-        String formattedDate;        
-        String line;
-        
-        try {
-            BufferedReader brPrev = new BufferedReader(new FileReader(fileName));  
-            line = brPrev.readLine();
-            while ((line = brPrev.readLine()) != null) {
-                record = createMinuteDataRec(line);
-                minuteDataForInterval.add(record);
-                record = new RecordMinute();
-
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(LandingNifty.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        lineModel = new LineChartModel();
-        ChartData data = new ChartData();
-
-        LineChartDataSet dataSet = new LineChartDataSet();
-        List<Object> values = new ArrayList<>();
-        
-        List<String> labels = new ArrayList<>();
-        
-        for (int k = minuteDataForInterval.size()-52; k < minuteDataForInterval.size(); k++) {
-            values.add(Double.toString(minuteDataForInterval.get(k).getDaylastprice()));
-            DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-            formattedDate = targetFormat.format(minuteDataForInterval.get(k).getLastUpdateTime());
-            labels.add(formattedDate);
-        }
-        dataSet.setData(values);
-        dataSet.setFill(false);
-        dataSet.setLabel("Nifty 50 Chart");
-        dataSet.setBorderColor("rgb(75, 192, 192)");
-        dataSet.setTension(0.1);
-        data.addChartDataSet(dataSet);
-        
-        data.setLabels(labels);
-
-        //Options
-        LineChartOptions options = new LineChartOptions();
-//        options.setMaintainAspectRatio(false);
-        Title title = new Title();
-        title.setDisplay(true);
-        title.setText("Nifty 50 Chart");
-        options.setTitle(title);
-
-        Title subtitle = new Title();
-        subtitle.setDisplay(true);
-        subtitle.setText("Line Chart Subtitle");
-        options.setTitle(subtitle);
-
-        lineModel.setOptions(options);
-        lineModel.setData(data);
-        return lineModel;
-    }
-  
-    
-    public List<RecordCallPrice> generatIntradayCall() {
+//    public LineChartModel generatIntradayCall() {
+    public String generatIntradayCall() {
         File directory = new File(DataStoreNames.TICKER_DATA_DETAILS);
-        List listFileArray = Arrays.asList(directory.list());
-        Collections.sort(listFileArray); //directories are sorted as per their name
-        int dirCount = listFileArray.size();
+//        List listFileArray = Arrays.asList(directory.list());
+//        Collections.sort(listFileArray); //directories are sorted as per their name
+//        int dirCount = listFileArray.size();
         String scripFolderPath = "";
         String[] delimitedString;
         List<RecordCallPrice> resultDatas = new ArrayList<RecordCallPrice>(); // call list for the last and 
 //        previous days file using elliot curve algo
         DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         String formattedDate = "";
-        for (int i = 0; i < dirCount; i++) {
-            scripFolderPath = DataStoreNames.TICKER_DATA_DETAILS.concat(listFileArray.get(i).toString());
-            scripFolderPath = scripFolderPath.concat("/");
-            File fileListPerScrip = new File(scripFolderPath);
-            File[] arrayPerScrip = fileListPerScrip.listFiles();
-            System.out.println(arrayPerScrip[0]);
-            
-            String scripId = listFileArray.get(i).toString();
-            String scripLast = arrayPerScrip[0].getAbsolutePath();
-            CsvTickData recordDataLast = new CsvTickData();
-            recordDataLast = readCSVData(scripLast);
-//            formattedDate = targetFormat.format(recordDataLast.getDateTime());
-            resultDatas.add(fillResult(recordDataLast.getTickData(), scripId, recordDataLast.getDateTime()));
-            
-        }
-        return resultDatas;
+//        for (int i = 0; i < dirCount; i++) {
+//            scripFolderPath = DataStoreNames.TICKER_DATA_DETAILS.concat(listFileArray.get(i).toString());
+//            scripFolderPath = scripFolderPath.concat("/");
+//            File fileListPerScrip = new File(scripFolderPath);
+//            File[] arrayPerScrip = fileListPerScrip.listFiles();
+//            System.out.println(arrayPerScrip[0]);
+//            
+//            String scripId = listFileArray.get(i).toString();
+//            String scripLast = arrayPerScrip[0].getAbsolutePath();
+//            CsvTickData recordDataLast = new CsvTickData();
+//            recordDataLast = readCSVData(scripLast);
+////            formattedDate = targetFormat.format(recordDataLast.getDateTime());
+//            resultDatas.add(fillResult(recordDataLast.getTickData(), scripId, recordDataLast.getDateTime()));            
+//        }
+        scripFolderPath = DataStoreNames.TICKER_DATA_DETAILS.concat("NIFTY 50");
+        scripFolderPath = scripFolderPath.concat("/");
+        File fileListPerScrip = new File(scripFolderPath);
+        File[] arrayPerScrip = fileListPerScrip.listFiles();
+//        System.out.println(arrayPerScrip[0]);
+
+        String scripId = "NIFTY 50";
+        String scripLast = arrayPerScrip[0].getAbsolutePath();
+        CsvTickData recordDataLast = new CsvTickData();
+        recordDataLast = readCSVData(scripLast);
+        formattedDate = targetFormat.format(recordDataLast.getDateTime());
+        RecordCallPrice niftyResult = new RecordCallPrice();
+        niftyResult = fillResult(recordDataLast.getTickData(), scripId, recordDataLast.getDateTime());
+
+//        lineModel = populateNifty(scripId, niftyResult.getLastCallVersionOne(), 
+//                niftyResult.getPrice(), formattedDate);
+        infoText= "ScripID="+scripId+", CallOne="+niftyResult.getLastCallVersionOne()+","
+                + " Calltime="+formattedDate;
+        
+        return infoText;
     }
     private RecordMinute createMinuteDataRec(String lineFromFile) {
         RecordMinute record = new RecordMinute();
@@ -257,6 +213,74 @@ public class GeneratedCall implements Serializable {
 
 //        System.out.println("recordTest:" + records.get(records.size() - 1).get(1));
         return eachResultData;
+    }
+    
+//    public LineChartModel populateNifty(String scripID, String call, Double price, String lastUpdTime){  
+    public LineChartModel populateNifty(){
+
+        String fileName = TICKER_DATA_NIFTY;
+        List<RecordMinute> minuteDataForInterval = new ArrayList<>();
+        RecordMinute record = new RecordMinute();
+        String formattedDate;        
+        String line;
+        
+        try {
+            BufferedReader brPrev = new BufferedReader(new FileReader(fileName));  
+            line = brPrev.readLine();
+            while ((line = brPrev.readLine()) != null) {
+                record = createMinuteDataRec(line);
+                minuteDataForInterval.add(record);
+                record = new RecordMinute();
+
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(LandingNifty.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        lineModel = new LineChartModel();
+        ChartData data = new ChartData();
+
+        LineChartDataSet dataSet = new LineChartDataSet();
+        List<Object> values = new ArrayList<>();
+        
+        List<String> labels = new ArrayList<>();
+        
+        for (int k = minuteDataForInterval.size()-51; k < minuteDataForInterval.size(); k++) {
+            values.add(Double.toString(minuteDataForInterval.get(k).getDaylastprice()));
+            DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+            formattedDate = targetFormat.format(minuteDataForInterval.get(k).getLastUpdateTime());
+            labels.add(formattedDate);
+        }
+        //value for datatip
+//        values.add(Double.toString(price));
+//        labels.add(scripID+", "+call+", "+lastUpdTime);
+        
+        dataSet.setData(values);
+        dataSet.setFill(false);
+        dataSet.setLabel("Nifty 50 Chart");
+        dataSet.setBorderColor("rgb(75, 192, 192)");
+        dataSet.setTension(0.1);
+        data.addChartDataSet(dataSet);
+        
+        data.setLabels(labels);
+
+        //Options
+        LineChartOptions options = new LineChartOptions();
+//        options.setMaintainAspectRatio(false);
+        Title title = new Title();
+        title.setDisplay(true);
+        title.setText("Nifty 50 Chart");
+        options.setTitle(title);
+
+        Title subtitle = new Title();
+        subtitle.setDisplay(true);
+//        subtitle.setText("ScripID="+scripID+", CallOne="+call+", Calltime="+lastUpdTime);
+        subtitle.setText("Last Nifty 50 Data Details");
+        options.setTitle(subtitle);
+
+        lineModel.setOptions(options);
+        lineModel.setData(data);
+        return lineModel;
     }
 
 }

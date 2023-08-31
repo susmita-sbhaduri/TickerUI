@@ -16,7 +16,14 @@
             <p:lineChart  model="#{generatedCall.lineModel}" style="width: 100%; height: 500px;"/> 
         </div>       
         <div class="card">
-            <p>"#{generatedCall.infoText}"</p> 
+            <p:card style="width: 25rem; margin-bottom: 2em">
+                <f:facet name="title">
+                    #{generatedCall.infoCallForScrip.get(0)}
+                </f:facet>
+
+                <p>#{generatedCall.infoCallForScrip.get(1)}</p>
+
+            </p:card>
         </div>        
     </ui:define>
 

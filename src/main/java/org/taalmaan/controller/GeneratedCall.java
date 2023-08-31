@@ -50,7 +50,8 @@ public class GeneratedCall implements Serializable {
      * Creates a new instance of GenerateLastCall
      */
     private LineChartModel lineModel;
-    private String infoText;
+//    private String infoText;
+    private List<String> infoCallForScrip;
         
     @PostConstruct
     public void init() {
@@ -62,13 +63,22 @@ public class GeneratedCall implements Serializable {
         return lineModel;
     }
 
-    public String getInfoText() {
-        return infoText;
+    public List<String> getInfoCallForScrip() {
+        return infoCallForScrip;
     }
+    
+//    public String getInfoTitle() {
+//        return infoTitle;
+//    }
+//    
+//    public String getInfoText() {
+//        return infoText;
+//    }
      
     
 //    public LineChartModel generatIntradayCall() {
-    public String generatIntradayCall() {
+    public List<String> generatIntradayCall() {
+        infoCallForScrip = new ArrayList<>();
         File directory = new File(DataStoreNames.TICKER_DATA_DETAILS);
 //        List listFileArray = Arrays.asList(directory.list());
 //        Collections.sort(listFileArray); //directories are sorted as per their name
@@ -109,10 +119,14 @@ public class GeneratedCall implements Serializable {
 
 //        lineModel = populateNifty(scripId, niftyResult.getLastCallVersionOne(), 
 //                niftyResult.getPrice(), formattedDate);
-        infoText= "ScripID="+scripId+", CallOne="+niftyResult.getLastCallVersionOne()+","
-                + " Calltime="+formattedDate;
+        infoCallForScrip.add(scripId);
+        String infoText= "ScripID = "+scripId+", Call Version One = "+niftyResult.getLastCallVersionOne()+
+                ", Call Version Two = "+niftyResult.getLastCallVersionTwo()+
+                ", Price = "+niftyResult.getPrice()+
+                ", Call Generation Time = "+formattedDate;
         
-        return infoText;
+        infoCallForScrip.add(infoText);
+        return infoCallForScrip;
     }
     private RecordMinute createMinuteDataRec(String lineFromFile) {
         RecordMinute record = new RecordMinute();

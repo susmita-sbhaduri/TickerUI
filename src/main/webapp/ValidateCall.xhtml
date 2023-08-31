@@ -3,22 +3,24 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 template="./WEB-INF/template.xhtml"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
 
-    <ui:define name="content">
+    <ui:define name="content">  
         <style>
             .ui-chart {
                 margin-bottom: 50px;
             }
         </style>
         <div class="card">
-            <p:lineChart  model="#{landingNifty.lineModel}" style="width: 100%; height: 500px;"/> 
-        </div>
-        
-        <div class="card">
-            <p:button styleClass="black-button" outcome="GeneratedCall" value="Generate Call" icon="fa fa-check"/>
-            <p:button styleClass="black-button" outcome="ValidateCall" value="Validate Call" icon="fa fa-check"/>
-        </div>
+            <p:dataTable var="scripid" value="#{validateCall.scripIDList}">
+                <p:column headerText="Scrip Identifier">
+                    <h:outputText value="#{scripid.scripID}" />
+                </p:column>            
+            </p:dataTable>
+        </div>       
+
     </ui:define>
 
 </ui:composition>

@@ -13,14 +13,20 @@
                 margin-bottom: 50px;
             }
         </style>
-        <div class="card">
-            <p:dataTable var="scripid" value="#{validateCall.scripIDList}">
-                <p:column headerText="Scrip Identifier">
-                    <h:outputText value="#{scripid.scripID}" />
-                </p:column>            
-            </p:dataTable>
-        </div>       
-
+        <h:form id="form">
+            <div class="card">
+                <p:dataTable var="scripid" value="#{validateCall.scripIDList}">
+                    <p:column headerText="Scrip Identifier">
+                        <h:outputText value="#{scripid.scripID}"/>
+                    </p:column>
+                    <p:column>
+                        <p:commandButton icon="pi pi-chart-line" title="#{scripid.scripID}" action="#{validateCall.showScripChart()}">
+                            <f:setPropertyActionListener value="#{scripid}" target="#{validateCall.selectedScripID}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </div>       
+        </h:form>
     </ui:define>
 
 </ui:composition>

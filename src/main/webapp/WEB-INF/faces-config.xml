@@ -24,5 +24,27 @@
             </redirect>
         </navigation-case>
     </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/ScripChart.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>ValidateBuyCall</from-outcome>
+            <to-view-id>/validateBuyCall.xhtml</to-view-id>
+            <redirect include-view-params="true">
+                <view-param>
+                    <name>selectedid</name>
+                    <value>#{scripchart.scripIDSelected}</value>
+                </view-param>
+                <view-param>
+                    <name>calltwo</name>
+                    <value>#{scripchart.callTwoSelected}</value>
+                </view-param>
+                <view-param>
+                    <name>updatetime</name>
+                    <value>#{scripchart.lastUpdateSelected}</value>
+                </view-param>
+            </redirect>
+        </navigation-case>
+    </navigation-rule>
      
 </faces-config>

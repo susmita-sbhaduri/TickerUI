@@ -16,12 +16,15 @@
         <h:form id="form">
             <div class="card">
                 <p:dataTable var="buycalllist" value="#{scripchart.buyPerScripid}">
-                    <p:column headerText="Buy calls">
+                    <p:column headerText="#{buycalllist.scripID}">
                         <h:outputText value="#{buycalllist.lastCallVersionTwo}"/>
                     </p:column>
+                    <p:column headerText="Last Update Time">
+                        <h:outputText value="#{buycalllist.lastUpdateTime}"/>
+                    </p:column>
                     <p:column>
-                        <p:commandButton icon="pi pi-chart-line" title="#{scripid.scripID}" action="#{validateCall.showScripChart()}">
-                            <f:setPropertyActionListener value="#{scripid}" target="#{validateCall.selectedScripID}" />
+                        <p:commandButton icon="pi pi-chart-line" title="Validate" action="#{scripchart.populateBuyParms()}">
+                            <f:setPropertyActionListener value="#{buycalllist}" target="#{scripchart.selectedParm}" />
                         </p:commandButton>
                     </p:column>
                 </p:dataTable>

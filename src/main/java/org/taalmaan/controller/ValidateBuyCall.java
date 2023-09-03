@@ -43,10 +43,10 @@ import org.primefaces.model.charts.optionconfig.title.Title;
  *
  * @author sb
  */
-@Named(value = "validateCall")
+@Named(value = "validateBuyCall")
 @ViewScoped
 @ManagedBean
-public class ValidateCall implements Serializable {
+public class ValidateBuyCall implements Serializable {
 
     /**
      * Creates a new instance of ValidateCall
@@ -54,10 +54,13 @@ public class ValidateCall implements Serializable {
     private List<ScripID> scripIDList;
     private ScripID selectedScripID;
     private String scripID;
+    private String scripIDSelected;
+    private String callTwoSelected;
+    private String lastUpdateSelected;
         
     @PostConstruct
     public void init() {
-        listScriptId();
+        listDetails();
     }
 
     public List<ScripID> getScripIDList() {
@@ -79,17 +82,42 @@ public class ValidateCall implements Serializable {
     public void setScripID(String scripID) {
         this.scripID = scripID;
     }
+
+    public String getScripIDSelected() {
+        return scripIDSelected;
+    }
+
+    public void setScripIDSelected(String scripIDSelected) {
+        this.scripIDSelected = scripIDSelected;
+    }
+
+    public String getCallTwoSelected() {
+        return callTwoSelected;
+    }
+
+    public void setCallTwoSelected(String callTwoSelected) {
+        this.callTwoSelected = callTwoSelected;
+    }
+
+    public String getLastUpdateSelected() {
+        return lastUpdateSelected;
+    }
+
+    public void setLastUpdateSelected(String lastUpdateSelected) {
+        this.lastUpdateSelected = lastUpdateSelected;
+    }
     
-    public void listScriptId() {
-        scripIDList = new ArrayList<>();
-        List<String> scripListTemp = new ArrayList<>();
-        MasterDataServices masterDataService = new MasterDataServices();
-        scripListTemp = masterDataService.readScripData();
-        for (int k = 0; k < scripListTemp.size(); k++) {
-            ScripID scripID = new ScripID();
-            scripID.setScripID(scripListTemp.get(k));
-            scripIDList.add(scripID);
-        }
+    public void listDetails() {
+//        scripIDList = new ArrayList<>();
+//        List<String> scripListTemp = new ArrayList<>();
+//        MasterDataServices masterDataService = new MasterDataServices();
+//        scripListTemp = masterDataService.readScripData();
+//        for (int k = 0; k < scripListTemp.size(); k++) {
+//            ScripID scripID = new ScripID();
+//            scripID.setScripID(scripListTemp.get(k));
+//            scripIDList.add(scripID);
+//        }
+        System.out.println("scripIDSelected");
         
     }
     public String showPreviousCalls() {

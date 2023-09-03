@@ -7,6 +7,8 @@ package org.taalmaan.controller;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import org.bhaduri.datatransfer.DTO.RecordCallPrice;
@@ -22,6 +24,11 @@ public class Scripchart implements Serializable {
     private String scripID;
     private List<RecordCallPrice> buyPerScripid;
     private List<RecordCallPrice> sellPerScripid;
+    private RecordCallPrice selectedParm;
+    private String scripIDSelected;
+    private String callTwoSelected;
+    private String lastUpdateSelected;
+    
     
     public String getScripID() {
         return scripID;
@@ -46,6 +53,40 @@ public class Scripchart implements Serializable {
     public void setSellPerScripid(List<RecordCallPrice> sellPerScripid) {
         this.sellPerScripid = sellPerScripid;
     }
+
+    public RecordCallPrice getSelectedParm() {
+        return selectedParm;
+    }
+
+    public void setSelectedParm(RecordCallPrice selectedParm) {
+        this.selectedParm = selectedParm;
+    }
+
+    public String getScripIDSelected() {
+        return scripIDSelected;
+    }
+
+    public void setScripIDSelected(String scripIDSelected) {
+        this.scripIDSelected = scripIDSelected;
+    }
+
+    public String getCallTwoSelected() {
+        return callTwoSelected;
+    }
+
+    public void setCallTwoSelected(String callTwoSelected) {
+        this.callTwoSelected = callTwoSelected;
+    }
+
+    public String getLastUpdateSelected() {
+        return lastUpdateSelected;
+    }
+
+    public void setLastUpdateSelected(String lastUpdateSelected) {
+        this.lastUpdateSelected = lastUpdateSelected;
+    }
+    
+    
     
     public Scripchart() {
     }
@@ -58,8 +99,7 @@ public class Scripchart implements Serializable {
         
         MasterDataServices masterDataService = new MasterDataServices();
         callsPerScripid = masterDataService.callListPerScrip(scripID);
-        for (int k = callsPerScripid.size()-1; k > callsPerScripid.size(); k--) {
-            RecordCallPrice record = new RecordCallPrice();
+        for (int k = callsPerScripid.size()-1; k >= 0; k--) {
             if(callsPerScripid.get(k).getLastCallVersionTwo().equals("buy")){
 //                record = callsPerScripid.get(k);
                 buyPerScripid.add(callsPerScripid.get(k));
@@ -68,7 +108,7 @@ public class Scripchart implements Serializable {
             if(callsPerScripid.get(k).getLastCallVersionTwo().equals("sell")){
 //                record = callsPerScripid.get(k);
                 sellPerScripid.add(callsPerScripid.get(k));
-                sell_count = buy_count+1;
+                sell_count = sell_count+1;
             }
             if(buy_count==10 && sell_count==10){
                 break;
@@ -78,7 +118,14 @@ public class Scripchart implements Serializable {
         System.out.println("Gheuuu");
     }
 
-    
+    public String populateBuyParms() {
+        DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        lastUpdateSelected = targetFormat.format(selectedParm.getLastUpdateTime());
+        scripIDSelected = selectedParm.getScripID();
+        callTwoSelected = selectedParm.getLastCallVersionTwo();
+        System.out.println("Trying to navigate to " + scripID);
+        return "ValidateBuyCall";
+    }
     
     
 }

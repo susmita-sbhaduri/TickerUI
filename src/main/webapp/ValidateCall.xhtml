@@ -20,7 +20,7 @@
                         <h:outputText value="#{scripid.scripID}"/>
                     </p:column>
                     <p:column>
-                        <p:commandButton icon="pi pi-chart-line" title="#{scripid.scripID}" action="#{validateCall.showScripChart()}">
+                        <p:commandButton icon="pi pi-chart-line" title="#{scripid.scripID}" action="#{validateCall.showPreviousCalls()}">
                             <f:setPropertyActionListener value="#{scripid}" target="#{validateCall.selectedScripID}" />
                         </p:commandButton>
                     </p:column>

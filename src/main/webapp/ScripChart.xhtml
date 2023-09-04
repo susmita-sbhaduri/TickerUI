@@ -15,24 +15,24 @@
         
         <h:form id="form">
             <div class="card">
-                <p:dataTable var="buycalllist" value="#{scripchart.buyPerScripid}">
-                    <p:column headerText="#{buycalllist.scripID}">
-                        <h:outputText value="#{buycalllist.lastCallVersionTwo}"/>
+                <p:dataTable var="buycallrow" value="#{scripchart.buyPerScripid}">
+                    <p:column headerText="#{buycallrow.scripID}">
+                        <h:outputText value="#{buycallrow.lastCallVersionTwo}"/>
+                    </p:column>
+                    <p:column headerText="Price">
+                        <h:outputText value="#{buycallrow.price}"/>
                     </p:column>
                     <p:column headerText="Last Update Time">
-                        <h:outputText value="#{buycalllist.lastUpdateTime}"/>
+                        <h:outputText value="#{buycallrow.lastUpdateTime}"/>
                     </p:column>
                     <p:column>
                         <p:commandButton icon="pi pi-chart-line" title="Validate" action="#{scripchart.populateBuyParms()}">
-                            <f:setPropertyActionListener value="#{buycalllist}" target="#{scripchart.selectedParm}" />
+                            <f:setPropertyActionListener value="#{buycallrow}" target="#{scripchart.selectedParm}" />
                         </p:commandButton>
                     </p:column>
                 </p:dataTable>
             </div>       
-        </h:form>
-        <div>
-            The chart for #{scripchart.scripID} goes here.
-        </div>
+        </h:form>        
     </ui:define>
 
 </ui:composition>

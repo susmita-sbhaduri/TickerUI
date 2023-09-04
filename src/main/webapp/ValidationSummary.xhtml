@@ -9,10 +9,12 @@
 
     <ui:define name="content">         
         <f:metadata>
-            <f:viewParam name="selectedid" value="#{validateBuyCall.scripIDSelected}"></f:viewParam>
-            <f:viewParam name="calltwo" value="#{validateBuyCall.callTwoSelected}"></f:viewParam>
-            <f:viewParam name="updatetime" value="#{validateBuyCall.lastUpdateSelected}"></f:viewParam>
-            <f:viewAction action="#{validateBuyCall.listDetails()}"/>
+            <f:viewParam name="selectedid" value="#{validationsummary.scripId}"></f:viewParam>
+            <f:viewParam name="callfirst" value="#{validationsummary.callTwoFirst}"></f:viewParam>
+            <f:viewParam name="updtimefirst" value="#{validationsummary.lastUpdateFirst}"></f:viewParam>
+            <f:viewParam name="callsecond" value="#{validationsummary.callTwoSecond}"></f:viewParam>
+            <f:viewParam name="updtimesecond" value="#{validationsummary.lastUpdateSecond}"></f:viewParam>
+            <f:viewAction action="#{validationsummary.listDetails()}"/>
         </f:metadata> 
         <h:form id="form">
             <div class="card">

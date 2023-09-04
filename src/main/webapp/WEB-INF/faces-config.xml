@@ -29,7 +29,7 @@
         <from-view-id>/ScripChart.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>ValidateBuyCall</from-outcome>
-            <to-view-id>/validateBuyCall.xhtml</to-view-id>
+            <to-view-id>/ValidateBuyCall.xhtml</to-view-id>
             <redirect include-view-params="true">
                 <view-param>
                     <name>selectedid</name>
@@ -42,6 +42,36 @@
                 <view-param>
                     <name>updatetime</name>
                     <value>#{scripchart.lastUpdateSelected}</value>
+                </view-param>
+            </redirect>
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/ValidateBuyCall.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>ValidationSummary</from-outcome>
+            <to-view-id>/ValidationSummary.xhtml</to-view-id>
+            <redirect include-view-params="true">
+                <view-param>
+                    <name>selectedid</name>
+                    <value>#{validateBuyCall.scripIDSelected}</value>
+                </view-param>
+                <view-param>
+                    <name>callfirst</name>
+                    <value>#{validateBuyCall.callTwoSelected}</value>
+                </view-param>
+                <view-param>
+                    <name>updtimefirst</name>
+                    <value>#{validateBuyCall.lastUpdateSelected}</value>
+                </view-param>
+                <view-param>
+                    <name>callsecond</name>
+                    <value>#{validateBuyCall.callTwoSecond}</value>
+                </view-param>
+                <view-param>
+                    <name>updtimesecond</name>
+                    <value>#{validateBuyCall.lastUpdateSecond}</value>
                 </view-param>
             </redirect>
         </navigation-case>

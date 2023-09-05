@@ -37,11 +37,13 @@ public class ValidateBuyCall implements Serializable {
     private String scripIDSelected;
     private String callTwoSelected;
     private String lastUpdateSelected;
+    private String priceSeond;
     private List<RecordCallPrice> reverseCallList;
+    private String callListLen;
         
     @PostConstruct
     public void init() {
-        listDetails();
+//        listDetails();
     }
     
     public String getScripIDSelected() {
@@ -107,14 +109,26 @@ public class ValidateBuyCall implements Serializable {
     public void setLastUpdateSecond(String lastUpdateSecond) {
         this.lastUpdateSecond = lastUpdateSecond;
     }
+
+    public String getCallListLen() {
+        return callListLen;
+    }
+
+    public void setCallListLen(String callListLen) {
+        this.callListLen = callListLen;
+    }
+
+    public String getPriceSeond() {
+        return priceSeond;
+    }
+
+    public void setPriceSeond(String priceSeond) {
+        this.priceSeond = priceSeond;
+    }
     
-    
-    
+       
     public void listDetails() {
-//        scripIDList = new ArrayList<>();
-//        List<String> scripListTemp = new ArrayList<>();
         MasterDataServices masterDataService = new MasterDataServices();
-//        scripListTemp = masterDataService.readScripData();
         DateFormat originalFormat = new SimpleDateFormat("MMM-dd-yyyy", Locale.ENGLISH);
         
         if (callTwoSelected.equals("buy")) {
@@ -136,11 +150,6 @@ public class ValidateBuyCall implements Serializable {
                 ex.printStackTrace();
             }
         }
-//        for (int k = 0; k < scripListTemp.size(); k++) {
-//            ScripID scripID = new ScripID();
-//            scripID.setScripID(scripListTemp.get(k));
-//            scripIDList.add(scripID);
-//        }
         System.out.println("scripIDSelected");
         
     }
@@ -150,6 +159,8 @@ public class ValidateBuyCall implements Serializable {
         
         scripIDSecond = selectedAllParm.getScripID();
         callTwoSecond = selectedAllParm.getLastCallVersionTwo();
+        callListLen = String.valueOf(reverseCallList.size());
+        priceSeond = String.valueOf(selectedAllParm.getPrice());
 //        System.out.println("Trying to navigate to " + scripID);
         return "ValidationSummary";
     }

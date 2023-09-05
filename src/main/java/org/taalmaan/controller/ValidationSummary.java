@@ -58,11 +58,13 @@ public class ValidationSummary implements Serializable {
     private String lastUpdateFirst;
     private String callTwoSecond;
     private String lastUpdateSecond;
-    private List<RecordCallPrice> reverseCallList;
+    private String priceSecond;
+    private String callListLen;
+    private List<RecordMinute> minuteDataValid;
         
     @PostConstruct
     public void init() {
-        listDetails();
+        listMinuteDetails();
     }
 
     public String getScripId() {
@@ -88,16 +90,7 @@ public class ValidationSummary implements Serializable {
     public void setLastUpdateFirst(String lastUpdateFirst) {
         this.lastUpdateFirst = lastUpdateFirst;
     }
-       
-
-    public List<RecordCallPrice> getReverseCallList() {
-        return reverseCallList;
-    }
-
-    public void setReverseCallList(List<RecordCallPrice> reverseCallList) {
-        this.reverseCallList = reverseCallList;
-    }
-
+    
     public RecordCallPrice getSelectedAllParm() {
         return selectedAllParm;
     }
@@ -105,7 +98,6 @@ public class ValidationSummary implements Serializable {
     public void setSelectedAllParm(RecordCallPrice selectedAllParm) {
         this.selectedAllParm = selectedAllParm;
     }
-
    
     public String getCallTwoSecond() {
         return callTwoSecond;
@@ -122,51 +114,129 @@ public class ValidationSummary implements Serializable {
     public void setLastUpdateSecond(String lastUpdateSecond) {
         this.lastUpdateSecond = lastUpdateSecond;
     }
+
+    public String getCallListLen() {
+        return callListLen;
+    }
+
+    public void setCallListLen(String callListLen) {
+        this.callListLen = callListLen;
+    }
+
+    public String getPriceSecond() {
+        return priceSecond;
+    }
+
+    public void setPriceSecond(String priceSecond) {
+        this.priceSecond = priceSecond;
+    }
+
+    public List<RecordMinute> getMinuteDataValid() {
+        return minuteDataValid;
+    }
+
+    public void setMinuteDataValid(List<RecordMinute> minuteDataValid) {
+        this.minuteDataValid = minuteDataValid;
+    }
+      
     
-    
-    
-    public void listDetails() {
-//        scripIDList = new ArrayList<>();
-//        List<String> scripListTemp = new ArrayList<>();
-        MasterDataServices masterDataService = new MasterDataServices();
-//        scripListTemp = masterDataService.readScripData();
-        DateFormat originalFormat = new SimpleDateFormat("MMM-dd-yyyy", Locale.ENGLISH);
-        
-        if (callTwoSelected.equals("buy")) {
-            try {
-                Date dateselected = originalFormat.parse(lastUpdateSelected);
-                reverseCallList = masterDataService.listReverseCalls(scripIDSelected,
-                        dateselected, "sell");
-            } catch (ParseException ex) {
-                ex.printStackTrace();
+    public void listMinuteDetails() {
+        if (callTwoFirst.equals("buy")) {
+            if (callListLen.equals("0") == false) {
+                MasterDataServices masterDataService = new MasterDataServices();
+                List<RecordMinute> minuteDataForRange = new ArrayList<>();
+                minuteDataValid = new ArrayList<>();
+                DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+                Date firstDate = null;
+                Date secondDate = null;
+                try {
+                    firstDate = targetFormat.parse(lastUpdateFirst);
+                    secondDate = targetFormat.parse(lastUpdateSecond);
+                } catch (ParseException ex) {
+                    ex.printStackTrace();
+                }
+                RecordMinute record = new RecordMinute();
+                minuteDataForRange = masterDataService.getMindataForRange(scripId,
+                        secondDate, firstDate);
+                Double sellPrice = Double.parseDouble(priceSecond);
+                for (int k = 0; k < minuteDataForRange.size(); k++) {
+                    if (minuteDataForRange.get(k).getDaylastprice() < sellPrice) {
+                        record.setScripID(minuteDataForRange.get(k).getScripID());
+                        record.setLastUpdateTime(minuteDataForRange.get(k).getLastUpdateTime());
+                        record.setOpenprice(minuteDataForRange.get(k).getOpenprice());
+                        record.setDaylastprice(minuteDataForRange.get(k).getDaylastprice());
+                        record.setDayhighprice(minuteDataForRange.get(k).getDayhighprice());
+                        record.setDaylowprice(minuteDataForRange.get(k).getDaylowprice());
+                        record.setPrevcloseprice(minuteDataForRange.get(k).getPrevcloseprice());
+                        record.setTotaltradedvolume(minuteDataForRange.get(k).getTotaltradedvolume());
+                        minuteDataValid.add(record);
+                        record = new RecordMinute();
+                    }
+                }
+                if(minuteDataValid.isEmpty()){
+                    System.out.println("Buy price is not satisfied w.r.t selected Sell call for this scripid=" + scripId);
+                }
             }
         }
         
-        if (callTwoSelected.equals("sell")) {
-            try {
-                Date dateselected = originalFormat.parse(lastUpdateSelected);
-                reverseCallList = masterDataService.listReverseCalls(scripIDSelected,
-                        dateselected, "buy");
-            } catch (ParseException ex) {
-                ex.printStackTrace();
+        if (callTwoFirst.equals("sell")) {
+            if (callListLen.equals("0") == false) {
+                MasterDataServices masterDataService = new MasterDataServices();
+                List<RecordMinute> minuteDataForRange = new ArrayList<>();
+                minuteDataValid = new ArrayList<>();
+                DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+                Date firstDate = null;
+                Date secondDate = null;
+                try {
+                    firstDate = targetFormat.parse(lastUpdateFirst);
+                    secondDate = targetFormat.parse(lastUpdateSecond);
+                } catch (ParseException ex) {
+                    ex.printStackTrace();
+                }
+                RecordMinute record = new RecordMinute();
+                minuteDataForRange = masterDataService.getMindataForRange(scripId,
+                        secondDate, firstDate);
+                Double buyPrice = Double.parseDouble(priceSecond);
+                for (int k = 0; k < minuteDataForRange.size(); k++) {
+                    if (minuteDataForRange.get(k).getDaylastprice() > buyPrice) {
+                        record.setScripID(minuteDataForRange.get(k).getScripID());
+                        record.setLastUpdateTime(minuteDataForRange.get(k).getLastUpdateTime());
+                        record.setOpenprice(minuteDataForRange.get(k).getOpenprice());
+                        record.setDaylastprice(minuteDataForRange.get(k).getDaylastprice());
+                        record.setDayhighprice(minuteDataForRange.get(k).getDayhighprice());
+                        record.setDaylowprice(minuteDataForRange.get(k).getDaylowprice());
+                        record.setPrevcloseprice(minuteDataForRange.get(k).getPrevcloseprice());
+                        record.setTotaltradedvolume(minuteDataForRange.get(k).getTotaltradedvolume());
+                        minuteDataValid.add(record);
+                        record = new RecordMinute();
+                    }
+                }
+                if(minuteDataValid.isEmpty()){
+                    System.out.println("Sell price is not satisfied w.r.t selected buy call for this scripid=" + scripId);
+                }
             }
         }
-//        for (int k = 0; k < scripListTemp.size(); k++) {
-//            ScripID scripID = new ScripID();
-//            scripID.setScripID(scripListTemp.get(k));
-//            scripIDList.add(scripID);
-//        }
-        System.out.println("scripIDSelected");
-        
     }
-    public String populateAllParms() {
-        DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-        lastUpdateSecond = targetFormat.format(selectedAllParm.getLastUpdateTime());
         
-        scripIDSecond = selectedAllParm.getScripID();
-        callTwoSecond = selectedAllParm.getLastCallVersionTwo();
-//        System.out.println("Trying to navigate to " + scripID);
-        return "ValidationSummary";
-    }
+//        DateFormat originalFormat = new SimpleDateFormat("MMM-dd-yyyy", Locale.ENGLISH);
+        
+//       
+//            try {
+//                Date dateselected = originalFormat.parse(lastUpdateSelected);
+//                reverseCallList = masterDataService.listReverseCalls(scripIDSelected,
+//                        dateselected, "sell");
+//            } catch (ParseException ex) {
+//                ex.printStackTrace();
+//            }
+      
+//    public String populateAllParms() {
+//        DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+//        lastUpdateSecond = targetFormat.format(selectedAllParm.getLastUpdateTime());
+//        
+//        scripIDSecond = selectedAllParm.getScripID();
+//        callTwoSecond = selectedAllParm.getLastCallVersionTwo();
+////        System.out.println("Trying to navigate to " + scripID);
+//        return "ValidationSummary";
+//    }
 
 }

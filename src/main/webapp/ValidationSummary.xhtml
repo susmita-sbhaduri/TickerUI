@@ -14,24 +14,21 @@
             <f:viewParam name="updtimefirst" value="#{validationsummary.lastUpdateFirst}"></f:viewParam>
             <f:viewParam name="callsecond" value="#{validationsummary.callTwoSecond}"></f:viewParam>
             <f:viewParam name="updtimesecond" value="#{validationsummary.lastUpdateSecond}"></f:viewParam>
-            <f:viewAction action="#{validationsummary.listDetails()}"/>
+            <f:viewParam name="updtimesecond" value="#{validationsummary.lastUpdateSecond}"></f:viewParam>
+            <f:viewParam name="pricesecond" value="#{validationsummary.priceSecond}"></f:viewParam>
+            <f:viewAction action="#{validationsummary.listMinuteDetails()}"/>
         </f:metadata> 
         <h:form id="form">
             <div class="card">
-                <p:dataTable var="revcallrow" value="#{validateBuyCall.reverseCallList}">
-                    <p:column headerText="#{revcallrow.scripID}">
-                        <h:outputText value="#{revcallrow.lastCallVersionTwo}"/>
+                <p:dataTable var="validminuterow" value="#{validationsummary.minuteDataValid}">
+                    <p:column headerText="Last Update Time">
+                        <h:outputText value="#{validminuterow.lastUpdateTime}"/>
                     </p:column>
                     <p:column headerText="Price">
-                        <h:outputText value="#{revcallrow.price}"/>
+                        <h:outputText value="#{validminuterow.daylastprice}"/>
                     </p:column>
-                    <p:column headerText="Last Update Time">
-                        <h:outputText value="#{revcallrow.lastUpdateTime}"/>
-                    </p:column>
-                    <p:column>
-                        <p:commandButton icon="pi pi-chart-line" title="Validate" action="#{validateBuyCall.populateAllParms()}">
-                            <f:setPropertyActionListener value="#{revcallrow}" target="#{validateBuyCall.selectedAllParm}" />
-                        </p:commandButton>
+                    <p:column headerText="Total Trade Volume">
+                        <h:outputText value="#{validminuterow.totaltradedvolume}"/>
                     </p:column>
                 </p:dataTable>
             </div>       

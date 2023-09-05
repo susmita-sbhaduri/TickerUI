@@ -88,8 +88,7 @@ public class Scripchart implements Serializable {
     
     
     
-    public Scripchart() {
-    }
+   
     public void loadScripCalls() {
         buyPerScripid = new ArrayList<>();
         sellPerScripid = new ArrayList<>();

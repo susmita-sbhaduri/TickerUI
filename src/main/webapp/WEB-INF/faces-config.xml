@@ -73,6 +73,14 @@
                     <name>updtimesecond</name>
                     <value>#{validateBuyCall.lastUpdateSecond}</value>
                 </view-param>
+                <view-param>
+                    <name>pricesecond</name>
+                    <value>#{validateBuyCall.priceSeond}</value>
+                </view-param>
+                <view-param>
+                    <name>callistlen</name>
+                    <value>#{validateBuyCall.callListLen}</value>
+                </view-param>
             </redirect>
         </navigation-case>
     </navigation-rule>

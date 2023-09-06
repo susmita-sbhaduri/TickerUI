@@ -64,7 +64,7 @@ public class ValidationSummary implements Serializable {
         
     @PostConstruct
     public void init() {
-        listMinuteDetails();
+//        listMinuteDetails();
     }
 
     public String getScripId() {

@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -39,6 +40,7 @@ public class ValidateBuyCall implements Serializable {
     private String lastUpdateSelected;
     private String priceSeond;
     private List<RecordCallPrice> reverseCallList;
+    private List<RecordCallPrice> revCallListAll;
     private String callListLen;
         
     @PostConstruct
@@ -125,17 +127,29 @@ public class ValidateBuyCall implements Serializable {
     public void setPriceSeond(String priceSeond) {
         this.priceSeond = priceSeond;
     }
+
+    public List<RecordCallPrice> getRevCallListAll() {
+        return revCallListAll;
+    }
+
+    public void setRevCallListAll(List<RecordCallPrice> revCallListAll) {
+        this.revCallListAll = revCallListAll;
+    }
     
        
     public void listDetails() {
         MasterDataServices masterDataService = new MasterDataServices();
-        DateFormat originalFormat = new SimpleDateFormat("MMM-dd-yyyy", Locale.ENGLISH);
+        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         
         if (callTwoSelected.equals("buy")) {
             try {
                 Date dateselected = originalFormat.parse(lastUpdateSelected);
-                reverseCallList = masterDataService.listReverseCalls(scripIDSelected,
+                revCallListAll = masterDataService.listReverseCalls(scripIDSelected,
                         dateselected, "sell");
+                reverseCallList = new ArrayList<>();
+                for (int k = 0; k < 10; k++) {
+                    reverseCallList.add(revCallListAll.get(k));
+                }
             } catch (ParseException ex) {
                 ex.printStackTrace();
             }
@@ -144,8 +158,12 @@ public class ValidateBuyCall implements Serializable {
         if (callTwoSelected.equals("sell")) {
             try {
                 Date dateselected = originalFormat.parse(lastUpdateSelected);
-                reverseCallList = masterDataService.listReverseCalls(scripIDSelected,
+                revCallListAll = masterDataService.listReverseCalls(scripIDSelected,
                         dateselected, "buy");
+                reverseCallList = new ArrayList<>();
+                for (int k = 0; k < 10; k++) {
+                    reverseCallList.add(revCallListAll.get(k));
+                }
             } catch (ParseException ex) {
                 ex.printStackTrace();
             }

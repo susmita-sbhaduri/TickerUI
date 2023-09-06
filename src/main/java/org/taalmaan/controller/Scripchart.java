@@ -99,12 +99,14 @@ public class Scripchart implements Serializable {
         MasterDataServices masterDataService = new MasterDataServices();
         callsPerScripid = masterDataService.callListPerScrip(scripID);
         for (int k = callsPerScripid.size()-1; k >= 0; k--) {
-            if(callsPerScripid.get(k).getLastCallVersionTwo().equals("buy")){
+            if(callsPerScripid.get(k).getLastCallVersionTwo().equals("buy") &&
+                    buy_count<10){
 //                record = callsPerScripid.get(k);
                 buyPerScripid.add(callsPerScripid.get(k));
                 buy_count = buy_count+1;
             }
-            if(callsPerScripid.get(k).getLastCallVersionTwo().equals("sell")){
+            if(callsPerScripid.get(k).getLastCallVersionTwo().equals("sell") &&
+                    sell_count<10){
 //                record = callsPerScripid.get(k);
                 sellPerScripid.add(callsPerScripid.get(k));
                 sell_count = sell_count+1;

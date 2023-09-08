@@ -14,11 +14,11 @@
         </f:metadata>
         
         <h:form id="form">
-            <div class="card">
-                <p:dataTable var="buycallrow" value="#{scripchart.buyPerScripid}">
-                    <p:column headerText="#{buycallrow.scripID}">
-                        <h:outputText value="#{buycallrow.lastCallVersionTwo}"/>
-                    </p:column>
+            <div class="card">               
+                <p:dataTable var="buycallrow" value="#{scripchart.buyPerScripid}">   
+                    <f:facet name="header">
+                        List of Buy calls for #{scripchart.scripID}
+                    </f:facet>
                     <p:column headerText="Price">
                         <h:outputText value="#{buycallrow.price}"/>
                     </p:column>

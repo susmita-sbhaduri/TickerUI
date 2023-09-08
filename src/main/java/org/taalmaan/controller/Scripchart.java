@@ -11,6 +11,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import org.bhaduri.datatransfer.DTO.RecordCallPrice;
 import org.bhaduri.minutedataaccess.services.MasterDataServices;
 
@@ -29,7 +30,11 @@ public class Scripchart implements Serializable {
     private String callTwoSelected;
     private String lastUpdateSelected;
     
-    
+    @PostConstruct
+    public void init() {
+//        listDetails();
+    }
+  
     public String getScripID() {
         return scripID;
     }
@@ -86,9 +91,6 @@ public class Scripchart implements Serializable {
         this.lastUpdateSelected = lastUpdateSelected;
     }
     
-    
-    
-   
     public void loadScripCalls() {
         buyPerScripid = new ArrayList<>();
         sellPerScripid = new ArrayList<>();

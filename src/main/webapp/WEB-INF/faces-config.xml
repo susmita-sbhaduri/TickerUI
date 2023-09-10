@@ -43,6 +43,10 @@
                     <name>updatetime</name>
                     <value>#{scripchart.lastUpdateSelected}</value>
                 </view-param>
+                <view-param>
+                    <name>pricefirst</name>
+                    <value>#{scripchart.priceSelected}</value>
+                </view-param>
             </redirect>
         </navigation-case>
     </navigation-rule>
@@ -64,6 +68,10 @@
                 <view-param>
                     <name>updtimefirst</name>
                     <value>#{validateBuyCall.lastUpdateSelected}</value>
+                </view-param>
+                <view-param>
+                    <name>pricefirst</name>
+                    <value>#{validateBuyCall.priceFirst}</value>
                 </view-param>
                 <view-param>
                     <name>callsecond</name>

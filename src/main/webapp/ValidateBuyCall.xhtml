@@ -12,14 +12,15 @@
             <f:viewParam name="selectedid" value="#{validateBuyCall.scripIDSelected}"></f:viewParam>
             <f:viewParam name="calltwo" value="#{validateBuyCall.callTwoSelected}"></f:viewParam>
             <f:viewParam name="updatetime" value="#{validateBuyCall.lastUpdateSelected}"></f:viewParam>
+            <f:viewParam name="pricefirst" value="#{validateBuyCall.priceFirst}"></f:viewParam>
             <f:viewAction action="#{validateBuyCall.listDetails()}"/>
         </f:metadata> 
         <h:form id="form">
             <div class="card">
                 <p:dataTable var="revcallrow" value="#{validateBuyCall.reverseCallList}">
-                    <p:column headerText="#{revcallrow.scripID}">
-                        <h:outputText value="#{revcallrow.lastCallVersionTwo}"/>
-                    </p:column>
+                    <f:facet name="header">
+                        List of SELL calls generated for previous to the selected BUY call for#{validateBuyCall.scripIDSelected}
+                    </f:facet>                    
                     <p:column headerText="Price">
                         <h:outputText value="#{revcallrow.price}"/>
                     </p:column>

@@ -38,6 +38,7 @@ public class ValidateBuyCall implements Serializable {
     private String scripIDSelected;
     private String callTwoSelected;
     private String lastUpdateSelected;
+    private String priceFirst;
     private String priceSeond;
     private List<RecordCallPrice> reverseCallList;
     private List<RecordCallPrice> revCallListAll;
@@ -120,6 +121,16 @@ public class ValidateBuyCall implements Serializable {
         this.callListLen = callListLen;
     }
 
+    public String getPriceFirst() {
+        return priceFirst;
+    }
+
+    public void setPriceFirst(String priceFirst) {
+        this.priceFirst = priceFirst;
+    }
+    
+    
+    
     public String getPriceSeond() {
         return priceSeond;
     }

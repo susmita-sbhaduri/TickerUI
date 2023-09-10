@@ -17,6 +17,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.bhaduri.datatransfer.DTO.RecordCallPrice;
 import org.bhaduri.datatransfer.DTO.RecordMinute;
+import org.bhaduri.datatransfer.DTO.ValidateSummary;
 import org.bhaduri.minutedataaccess.services.MasterDataServices;
 
 /**
@@ -38,8 +39,9 @@ public class ValidationSummary implements Serializable {
     private String callTwoSecond;
     private String lastUpdateSecond;
     private String priceSecond;
+    private String priceFirst;
     private String callListLen;
-    private List<RecordMinute> minuteDataValid;
+    private List<ValidateSummary> minuteDataValid;
         
     @PostConstruct
     public void init() {
@@ -110,11 +112,20 @@ public class ValidationSummary implements Serializable {
         this.priceSecond = priceSecond;
     }
 
-    public List<RecordMinute> getMinuteDataValid() {
+    public String getPriceFirst() {
+        return priceFirst;
+    }
+
+    public void setPriceFirst(String priceFirst) {
+        this.priceFirst = priceFirst;
+    }
+
+    
+    public List<ValidateSummary> getMinuteDataValid() {
         return minuteDataValid;
     }
 
-    public void setMinuteDataValid(List<RecordMinute> minuteDataValid) {
+    public void setMinuteDataValid(List<ValidateSummary> minuteDataValid) {
         this.minuteDataValid = minuteDataValid;
     }
       
@@ -134,30 +145,32 @@ public class ValidationSummary implements Serializable {
                 } catch (ParseException ex) {
                     ex.printStackTrace();
                 }
-                RecordMinute record = new RecordMinute();
+//                RecordMinute record = new RecordMinute();
+                ValidateSummary record = new ValidateSummary();
                 minuteDataForRange = masterDataService.getMindataForRange(scripId,
                         secondDate, firstDate);
-                Double sellPrice = Double.parseDouble(priceSecond);
+                Double buyPrice = Double.valueOf(priceFirst);
+                Double sellPrice = Double.valueOf(priceSecond);
+                Double diffPercent;
+                
                 for (int k = 0; k < minuteDataForRange.size(); k++) {
                     if (minuteDataForRange.get(k).getDaylastprice() < sellPrice) {
                         record.setScripID(minuteDataForRange.get(k).getScripID());
                         record.setLastUpdateTime(minuteDataForRange.get(k).getLastUpdateTime());
-                        record.setOpenprice(minuteDataForRange.get(k).getOpenprice());
+                        diffPercent = ((sellPrice-minuteDataForRange.get(k).getDaylastprice())/sellPrice)*100;
+                        record.setDiffFromSelectedSec(diffPercent);
+                        diffPercent = ((buyPrice-minuteDataForRange.get(k).getDaylastprice())/buyPrice)*100;
+                        record.setDiffFromSelectedFrst(diffPercent);
                         record.setDaylastprice(minuteDataForRange.get(k).getDaylastprice());
-                        record.setDayhighprice(minuteDataForRange.get(k).getDayhighprice());
-                        record.setDaylowprice(minuteDataForRange.get(k).getDaylowprice());
-                        record.setPrevcloseprice(minuteDataForRange.get(k).getPrevcloseprice());
-                        record.setTotaltradedvolume(minuteDataForRange.get(k).getTotaltradedvolume());
                         minuteDataValid.add(record);
-                        record = new RecordMinute();
+                        record = new ValidateSummary();
                     }
                 }
                 if(minuteDataValid.isEmpty()){
-                    System.out.println("Buy price is not satisfied w.r.t selected Sell call for this scripid=" + scripId);
+                    System.out.println("BUY call is not satisfied w.r.t selected SELL call for this scripid=" + scripId);
                 }
             }
         }
-        
         if (callTwoFirst.equals("sell")) {
             if (callListLen.equals("0") == false) {
                 MasterDataServices masterDataService = new MasterDataServices();
@@ -172,29 +185,33 @@ public class ValidationSummary implements Serializable {
                 } catch (ParseException ex) {
                     ex.printStackTrace();
                 }
-                RecordMinute record = new RecordMinute();
+//                RecordMinute record = new RecordMinute();
+                ValidateSummary record = new ValidateSummary();
                 minuteDataForRange = masterDataService.getMindataForRange(scripId,
                         secondDate, firstDate);
-                Double buyPrice = Double.parseDouble(priceSecond);
+                Double sellPrice = Double.valueOf(priceFirst);
+                Double buyPrice = Double.valueOf(priceSecond);
+                Double diffPercent;
+                
                 for (int k = 0; k < minuteDataForRange.size(); k++) {
                     if (minuteDataForRange.get(k).getDaylastprice() > buyPrice) {
                         record.setScripID(minuteDataForRange.get(k).getScripID());
                         record.setLastUpdateTime(minuteDataForRange.get(k).getLastUpdateTime());
-                        record.setOpenprice(minuteDataForRange.get(k).getOpenprice());
+                        diffPercent = ((minuteDataForRange.get(k).getDaylastprice() - buyPrice)/buyPrice)*100;
+                        record.setDiffFromSelectedSec(diffPercent);
+                        diffPercent = ((sellPrice-minuteDataForRange.get(k).getDaylastprice())/sellPrice)*100;
+                        record.setDiffFromSelectedFrst(diffPercent);
                         record.setDaylastprice(minuteDataForRange.get(k).getDaylastprice());
-                        record.setDayhighprice(minuteDataForRange.get(k).getDayhighprice());
-                        record.setDaylowprice(minuteDataForRange.get(k).getDaylowprice());
-                        record.setPrevcloseprice(minuteDataForRange.get(k).getPrevcloseprice());
-                        record.setTotaltradedvolume(minuteDataForRange.get(k).getTotaltradedvolume());
                         minuteDataValid.add(record);
-                        record = new RecordMinute();
+                        record = new ValidateSummary();
                     }
                 }
                 if(minuteDataValid.isEmpty()){
-                    System.out.println("Sell price is not satisfied w.r.t selected buy call for this scripid=" + scripId);
+                    System.out.println("SELL call is not satisfied w.r.t selected BUY call for this scripid=" + scripId);
                 }
             }
         }
+        
     }
         
 //        DateFormat originalFormat = new SimpleDateFormat("MMM-dd-yyyy", Locale.ENGLISH);

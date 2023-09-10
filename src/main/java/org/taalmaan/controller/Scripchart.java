@@ -29,6 +29,7 @@ public class Scripchart implements Serializable {
     private String scripIDSelected;
     private String callTwoSelected;
     private String lastUpdateSelected;
+    private String priceSelected;
     
     @PostConstruct
     public void init() {
@@ -90,6 +91,16 @@ public class Scripchart implements Serializable {
     public void setLastUpdateSelected(String lastUpdateSelected) {
         this.lastUpdateSelected = lastUpdateSelected;
     }
+
+    public String getPriceSelected() {
+        return priceSelected;
+    }
+
+    public void setPriceSelected(String priceSelected) {
+        this.priceSelected = priceSelected;
+    }
+    
+    
     
     public void loadScripCalls() {
         buyPerScripid = new ArrayList<>();
@@ -126,6 +137,7 @@ public class Scripchart implements Serializable {
         lastUpdateSelected = targetFormat.format(selectedParm.getLastUpdateTime());
         scripIDSelected = selectedParm.getScripID();
         callTwoSelected = selectedParm.getLastCallVersionTwo();
+        priceSelected = String.valueOf(selectedParm.getPrice());
         System.out.println("Trying to navigate to " + scripID);
         return "ValidateBuyCall";
     }

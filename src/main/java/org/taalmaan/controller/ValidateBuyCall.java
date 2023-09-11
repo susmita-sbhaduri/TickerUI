@@ -11,7 +11,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;

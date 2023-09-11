@@ -19,7 +19,7 @@
             <div class="card">
                 <p:dataTable var="revcallrow" value="#{validateBuyCall.reverseCallList}">
                     <f:facet name="header">
-                        List of reverse calls generated for previous to the selected #{validateBuyCall.callTwoSelected} call for #{validateBuyCall.scripIDSelected}
+                        List of latest 10 reverse calls generated for previous to the selected #{validateBuyCall.callTwoSelected} call for #{validateBuyCall.scripIDSelected}
                     </f:facet>                    
                     <p:column headerText="Price">
                         <h:outputText value="#{revcallrow.price}"/>

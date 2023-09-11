@@ -159,7 +159,8 @@ public class ValidationSummary implements Serializable {
                         record.setLastUpdateTime(minuteDataForRange.get(k).getLastUpdateTime());
                         diffPercent = ((sellPrice-minuteDataForRange.get(k).getDaylastprice())/sellPrice)*100;
                         record.setDiffFromSelectedSec(diffPercent);
-                        diffPercent = ((buyPrice-minuteDataForRange.get(k).getDaylastprice())/buyPrice)*100;
+//                        diffPercent = ((buyPrice-minuteDataForRange.get(k).getDaylastprice())/buyPrice)*100;
+                        diffPercent = ((minuteDataForRange.get(k).getDaylastprice()-buyPrice)/buyPrice)*100;
                         record.setDiffFromSelectedFrst(diffPercent);
                         record.setDaylastprice(minuteDataForRange.get(k).getDaylastprice());
                         minuteDataValid.add(record);

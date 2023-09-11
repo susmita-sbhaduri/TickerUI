@@ -13,11 +13,11 @@
             <f:viewAction action="#{scripchart.loadScripCalls()}"/>
         </f:metadata>
         
-        <h:form id="form">
+        <h:form id="formbuy">
             <div class="card">               
                 <p:dataTable var="buycallrow" value="#{scripchart.buyPerScripid}">   
                     <f:facet name="header">
-                        List of BUY calls for #{scripchart.scripID}
+                        List of latest 10 BUY calls for #{scripchart.scripID}
                     </f:facet>
                     <p:column headerText="Price">
                         <h:outputText value="#{buycallrow.price}"/>
@@ -32,7 +32,27 @@
                     </p:column>
                 </p:dataTable>
             </div>       
-        </h:form>        
+        </h:form> 
+        <h:form id="formsell">
+            <div class="card">               
+                <p:dataTable var="sellcallrow" value="#{scripchart.sellPerScripid}">   
+                    <f:facet name="header">
+                         List of latest 10 SELL calls for #{scripchart.scripID}
+                    </f:facet>
+                    <p:column headerText="Price">
+                        <h:outputText value="#{sellcallrow.price}"/>
+                    </p:column>
+                    <p:column headerText="Last Update Time">
+                        <h:outputText value="#{sellcallrow.lastUpdateTime}"/>
+                    </p:column>
+                    <p:column>
+                        <p:commandButton icon="pi pi-chart-line" title="Validate" action="#{scripchart.populateBuyParms()}">
+                            <f:setPropertyActionListener value="#{sellcallrow}" target="#{scripchart.selectedParm}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </div>       
+        </h:form>    
     </ui:define>
 
 </ui:composition>

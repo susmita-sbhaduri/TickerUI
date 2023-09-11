@@ -128,9 +128,6 @@ public class ValidateBuyCall implements Serializable {
     public void setPriceFirst(String priceFirst) {
         this.priceFirst = priceFirst;
     }
-    
-    
-    
     public String getPriceSeond() {
         return priceSeond;
     }

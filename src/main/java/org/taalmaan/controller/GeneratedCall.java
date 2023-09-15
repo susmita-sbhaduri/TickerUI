@@ -14,8 +14,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -23,14 +21,13 @@ import java.util.logging.Logger;
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
-import javax.enterprise.context.Dependent;
 import javax.faces.view.ViewScoped;
 import org.bhaduri.datatransfer.DTO.CsvTickData;
 import org.bhaduri.datatransfer.DTO.DataStoreNames;
 import static org.bhaduri.datatransfer.DTO.DataStoreNames.TICKER_DATA_NIFTY;
 import org.bhaduri.datatransfer.DTO.RecordCallPrice;
 import org.bhaduri.datatransfer.DTO.RecordMinute;
-import org.bhaduri.datatransfer.DTO.ResultData;
+import org.bhaduri.datatransfer.DTO.ScripID;
 import org.primefaces.model.charts.ChartData;
 import org.primefaces.model.charts.line.LineChartDataSet;
 import org.primefaces.model.charts.line.LineChartModel;
@@ -50,13 +47,14 @@ public class GeneratedCall implements Serializable {
      * Creates a new instance of GenerateLastCall
      */
     private LineChartModel lineModel;
-//    private String infoText;
     private List<String> infoCallForScrip;
+    private ScripID selectedScripID;
+    private String scripID;
         
     @PostConstruct
     public void init() {
-        populateNifty();
-        generatIntradayCall();
+//        populateNifty();
+//        generatIntradayCall();
     }
 
     public LineChartModel getLineModel() {
@@ -66,23 +64,29 @@ public class GeneratedCall implements Serializable {
     public List<String> getInfoCallForScrip() {
         return infoCallForScrip;
     }
+
+    public ScripID getSelectedScripID() {
+        return selectedScripID;
+    }
+
+    public void setSelectedScripID(ScripID selectedScripID) {
+        this.selectedScripID = selectedScripID;
+    }
+
+    public String getScripID() {
+        return scripID;
+    }
+
+    public void setScripID(String scripID) {
+        this.scripID = scripID;
+    }
     
-//    public String getInfoTitle() {
-//        return infoTitle;
-//    }
-//    
-//    public String getInfoText() {
-//        return infoText;
-//    }
+    
      
-    
-//    public LineChartModel generatIntradayCall() {
+
     public List<String> generatIntradayCall() {
         infoCallForScrip = new ArrayList<>();
         File directory = new File(DataStoreNames.TICKER_DATA_DETAILS);
-//        List listFileArray = Arrays.asList(directory.list());
-//        Collections.sort(listFileArray); //directories are sorted as per their name
-//        int dirCount = listFileArray.size();
         String scripFolderPath = "";
         String[] delimitedString;
         List<RecordCallPrice> resultDatas = new ArrayList<RecordCallPrice>(); // call list for the last and 
@@ -103,24 +107,23 @@ public class GeneratedCall implements Serializable {
 ////            formattedDate = targetFormat.format(recordDataLast.getDateTime());
 //            resultDatas.add(fillResult(recordDataLast.getTickData(), scripId, recordDataLast.getDateTime()));            
 //        }
-        scripFolderPath = DataStoreNames.TICKER_DATA_DETAILS.concat("NIFTY 50");
+        scripFolderPath = DataStoreNames.TICKER_DATA_DETAILS.concat(scripID);
         scripFolderPath = scripFolderPath.concat("/");
         File fileListPerScrip = new File(scripFolderPath);
         File[] arrayPerScrip = fileListPerScrip.listFiles();
 //        System.out.println(arrayPerScrip[0]);
 
-        String scripId = "NIFTY 50";
+//        String scripId = "NIFTY 50";
         String scripLast = arrayPerScrip[0].getAbsolutePath();
         CsvTickData recordDataLast = new CsvTickData();
         recordDataLast = readCSVData(scripLast);
         formattedDate = targetFormat.format(recordDataLast.getDateTime());
         RecordCallPrice niftyResult = new RecordCallPrice();
-        niftyResult = fillResult(recordDataLast.getTickData(), scripId, recordDataLast.getDateTime());
+        niftyResult = fillResult(recordDataLast.getTickData(), scripID, recordDataLast.getDateTime());
 
-//        lineModel = populateNifty(scripId, niftyResult.getLastCallVersionOne(), 
-//                niftyResult.getPrice(), formattedDate);
-        infoCallForScrip.add(scripId);
-        String infoText= "ScripID = "+scripId+", Call Version One = "+niftyResult.getLastCallVersionOne()+
+        lineModel = populateNifty(scripLast);
+        infoCallForScrip.add(scripID);
+        String infoText= "ScripID = "+scripID+", Call Version One = "+niftyResult.getLastCallVersionOne()+
                 ", Call Version Two = "+niftyResult.getLastCallVersionTwo()+
                 ", Price = "+niftyResult.getPrice()+
                 ", Call Generation Time = "+formattedDate;
@@ -230,9 +233,9 @@ public class GeneratedCall implements Serializable {
     }
     
 //    public LineChartModel populateNifty(String scripID, String call, Double price, String lastUpdTime){  
-    public LineChartModel populateNifty(){
+    private LineChartModel populateNifty(String fileName){
 
-        String fileName = TICKER_DATA_NIFTY;
+//        String fileName = TICKER_DATA_NIFTY;
         List<RecordMinute> minuteDataForInterval = new ArrayList<>();
         RecordMinute record = new RecordMinute();
         String formattedDate;        
@@ -251,7 +254,7 @@ public class GeneratedCall implements Serializable {
             Logger.getLogger(LandingNifty.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        lineModel = new LineChartModel();
+        LineChartModel lineModelInternal = new LineChartModel();
         ChartData data = new ChartData();
 
         LineChartDataSet dataSet = new LineChartDataSet();
@@ -271,7 +274,7 @@ public class GeneratedCall implements Serializable {
         
         dataSet.setData(values);
         dataSet.setFill(false);
-        dataSet.setLabel("Nifty 50 Chart");
+        dataSet.setLabel(scripID);
         dataSet.setBorderColor("rgb(75, 192, 192)");
         dataSet.setTension(0.1);
         data.addChartDataSet(dataSet);
@@ -283,18 +286,18 @@ public class GeneratedCall implements Serializable {
 //        options.setMaintainAspectRatio(false);
         Title title = new Title();
         title.setDisplay(true);
-        title.setText("Nifty 50 Chart");
+        title.setText(scripID+" Chart");
         options.setTitle(title);
 
         Title subtitle = new Title();
         subtitle.setDisplay(true);
 //        subtitle.setText("ScripID="+scripID+", CallOne="+call+", Calltime="+lastUpdTime);
-        subtitle.setText("Last Nifty 50 Data Details");
+        subtitle.setText("Latest "+scripID+" Data Details");
         options.setTitle(subtitle);
 
-        lineModel.setOptions(options);
-        lineModel.setData(data);
-        return lineModel;
+        lineModelInternal.setOptions(options);
+        lineModelInternal.setData(data);
+        return lineModelInternal;
     }
 
 }

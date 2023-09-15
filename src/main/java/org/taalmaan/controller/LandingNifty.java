@@ -5,23 +5,18 @@
 package org.taalmaan.controller;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import java.io.Serializable;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import org.bhaduri.datatransfer.DTO.*;
@@ -60,24 +55,7 @@ public class LandingNifty implements Serializable {
     }
 
     public LineChartModel populateNifty(){
-//        lastNifty = "50";
-//        values.add(65);
-//        values.add(59);
-//        values.add(80);
-//        values.add(81);
-//        values.add(56);
-//        values.add(55);
-//        values.add(40);
-        
-
-//        labels.add("January");
-//        labels.add("February");
-//        labels.add("March");
-//        labels.add("April");
-//        labels.add("May");
-//        labels.add("June");
-//        labels.add("July");
-        
+      
 
         String fileName = TICKER_DATA_NIFTY;
         List<RecordMinute> minuteDataForInterval = new ArrayList<>();
@@ -114,7 +92,7 @@ public class LandingNifty implements Serializable {
         }
         dataSet.setData(values);
         dataSet.setFill(false);
-        dataSet.setLabel("My First Dataset");
+        dataSet.setLabel("Latest 50 Nifty 50 values");
         dataSet.setBorderColor("rgb(75, 192, 192)");
         dataSet.setTension(0.1);
         data.addChartDataSet(dataSet);
@@ -131,7 +109,7 @@ public class LandingNifty implements Serializable {
 
         Title subtitle = new Title();
         subtitle.setDisplay(true);
-        subtitle.setText("Line Chart Subtitle");
+        subtitle.setText("Nifty 50 Latest Trend");
         options.setTitle(subtitle);
 
         lineModel.setOptions(options);

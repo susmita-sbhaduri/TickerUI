@@ -12,6 +12,30 @@
 
     <!-- navigations from tickerlist-->
     <navigation-rule>
+        <from-view-id>/CurrentNifty.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>ListScripId</from-outcome>
+            <to-view-id>/ListScripId.xhtml</to-view-id>
+            <redirect include-view-params="true">                
+            </redirect>
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/ListScripId.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>GeneratedCall</from-outcome>
+            <to-view-id>/GeneratedCall.xhtml</to-view-id>
+            <redirect include-view-params="true">
+                <view-param>
+                    <name>scripid</name>
+                    <value>#{listScripId.scripID}</value>
+                </view-param>            
+            </redirect>
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
         <from-view-id>/ValidateCall.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>ScripChart</from-outcome>

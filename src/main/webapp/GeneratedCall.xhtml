@@ -12,6 +12,11 @@
                 margin-bottom: 50px;
             }
         </style>
+        <f:metadata>
+            <f:viewParam name="scripid" value="#{generatedCall.scripID}"></f:viewParam>
+            <f:viewAction action="#{generatedCall.generatIntradayCall()}"/>
+        </f:metadata>
+        
         <div class="card">
             <p:lineChart  model="#{generatedCall.lineModel}" style="width: 100%; height: 500px;"/> 
         </div>       
